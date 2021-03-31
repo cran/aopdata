@@ -39,17 +39,17 @@ ggplot() +
 
 ## ---- message = FALSE, eval=FALSE---------------------------------------------
 #  ggplot() +
-#    geom_sf(data=df, aes(fill=E001), color=NA, alpha=.7) +
-#    scale_fill_viridis_c(option = "inferno") +
-#    labs(title='Spatial distribution of public schools', fill="N. of schools") +
+#    geom_sf(data=df, aes(fill=E003), color=NA, alpha=.7) +
+#    scale_fill_distiller(palette = "YlOrRd", direction = 1)+
+#    labs(title='Spatial distribution of elementary schools', fill="N. of schools") +
 #    theme_void()
 #  
 
-## ---- message = FALSE, eval=FALSE---------------------------------------------
-#  ggplot() +
-#    geom_sf(data=df, aes(fill=S001), color=NA, alpha=.7) +
-#    scale_fill_viridis_c(option = "inferno") +
-#    labs(title='Spatial distribution of hospitals', fill="N. of hospitals") +
-#    theme_void()
-#  
+## ---- message = FALSE, eval=TRUE----------------------------------------------
+ggplot() +
+  geom_sf(data=df, aes(fill=S004), color=NA, alpha=.7) +
+  scale_fill_distiller(palette = "YlGnBu", direction = 1)+
+  labs(title='Spatial distribution of hospitals', fill="N. of hospitals") +
+  theme_void()
+
 

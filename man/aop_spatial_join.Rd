@@ -20,6 +20,7 @@ Merges landuse or access data with H3 grid geometries
 \seealso{
 Other support functions: 
 \code{\link{aop_merge}()},
+\code{\link{check_connection}()},
 \code{\link{download_data}()},
 \code{\link{load_data}()},
 \code{\link{rm_accent}()},

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="date" content="2021-03-31" />
+
+<title>Introduction to aopdata</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to <code>aopdata</code></h1>
+<h4 class="date">2021-03-31</h4>
+
+
+
+<p>This vignette introduces the <strong><code>aopdata</code></strong> package, lists the cities for which data are available for download, and presents the data dictionary.</p>
+<p><strong><code>aopdata</code></strong> is an R package that makes it easy to download data from the <a href="https://www.ipea.gov.br/acessooportunidades/en/">Access to Opportunities Project (AOP)</a>. AOP is a research initiative led by the Institute for Applied Economic Research (Ipea) that aims to study transport accessibility and inequalities in access to opportunities in Brazilian cities. You can access more information about the project on the <a href="https://www.ipea.gov.br/acessooportunidades/en/">AOP website</a>.</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>You can install <code>aopdata</code> from CRAN, or the development version from GitHub.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CRAN</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&#39;aopdata&#39;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># github</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ipeaGIT/aopdata&quot;</span>, <span class="at">subdir =</span> <span class="st">&quot;r-package&quot;</span>)</span></code></pre></div>
+</div>
+<div id="usage" class="section level2">
+<h2>Usage</h2>
+<p>After installation, you can easily download accessibility estimates, as well as population and land use data, from 20 major Brazilian cities. Those cities are:</p>
+<table>
+<thead>
+<tr class="header">
+<th><strong>Abbreviation</strong></th>
+<th><strong>City Name</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bel</td>
+<td>Belem</td>
+</tr>
+<tr class="even">
+<td>bho</td>
+<td>Belo Horizonte</td>
+</tr>
+<tr class="odd">
+<td>bsb</td>
+<td>Brasilia</td>
+</tr>
+<tr class="even">
+<td>cam</td>
+<td>Campinas</td>
+</tr>
+<tr class="odd">
+<td>cgr</td>
+<td>Campo Grande</td>
+</tr>
+<tr class="even">
+<td>cur</td>
+<td>Curitiba</td>
+</tr>
+<tr class="odd">
+<td>duq</td>
+<td>Duque de Caxias</td>
+</tr>
+<tr class="even">
+<td>for</td>
+<td>Fortaleza</td>
+</tr>
+<tr class="odd">
+<td>goi</td>
+<td>Goiania</td>
+</tr>
+<tr class="even">
+<td>gua</td>
+<td>Guarulhos</td>
+</tr>
+<tr class="odd">
+<td>mac</td>
+<td>Maceio</td>
+</tr>
+<tr class="even">
+<td>man</td>
+<td>Manaus</td>
+</tr>
+<tr class="odd">
+<td>nat</td>
+<td>Natal</td>
+</tr>
+<tr class="even">
+<td>poa</td>
+<td>Porto Alegre</td>
+</tr>
+<tr class="odd">
+<td>rec</td>
+<td>Recife</td>
+</tr>
+<tr class="even">
+<td>rio</td>
+<td>Rio de Janeiro</td>
+</tr>
+<tr class="odd">
+<td>sal</td>
+<td>Salvador</td>
+</tr>
+<tr class="even">
+<td>sgo</td>
+<td>Sao Gonçalo</td>
+</tr>
+<tr class="odd">
+<td>slz</td>
+<td>Sao Luis</td>
+</tr>
+<tr class="even">
+<td>spo</td>
+<td>Sao Paulo</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Read <em>accessibility</em> estimates</strong></p>
+<p>To download accessibility estimates, you can use the <code>read_access()</code> function. The example below downloads data on accessibility by walking for the city of Curitiba, in Southern Brazil. The function will download data for the year 2019, which is the one currently available.</p>
+<p><code>read_access()</code> can also download the spatial geometry of each city by setting <code>geometry = TRUE</code>, which can be used to map accessibility levels across the city. Refer to the <a href="landuse_maps.html">mapping population and land use</a> and <a href="access_maps.html">mapping urban accessibility</a> vignettes for examples of how to use the spatial geometry information. For now, we’ll set <code>geometry = FALSE</code> to download a dataframe with no spatial information.</p>
+<p>Let’s check the results:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(cur )</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 4,683</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 96</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ abbrev_muni &lt;chr&gt; &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;c~</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ name_muni   &lt;chr&gt; &quot;Curitiba&quot;, &quot;Curitiba&quot;, &quot;Curitiba&quot;, &quot;Curitiba&quot;, &quot;Curitiba&quot;~</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ code_muni   &lt;int&gt; 4106902, 4106902, 4106902, 4106902, 4106902, 4106902, 4106~</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ id_hex      &lt;chr&gt; &quot;89a804c9593ffff&quot;, &quot;89a804ca61bffff&quot;, &quot;89a804ca643ffff&quot;, &quot;~</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ P001        &lt;int&gt; NA, NA, 25, NA, NA, NA, 28, NA, 37, 50, NA, 48, NA, NA, NA~</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ P002        &lt;int&gt; NA, NA, 21, NA, NA, NA, 24, NA, 33, 43, NA, 40, NA, NA, NA~</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ P003        &lt;int&gt; NA, NA, 3, NA, NA, NA, 4, NA, 5, 8, NA, 7, NA, NA, NA, 0, ~</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ P004        &lt;int&gt; NA, NA, 0, NA, NA, NA, 0, NA, 0, 0, NA, 0, NA, NA, NA, 0, ~</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ P005        &lt;int&gt; NA, NA, 0, NA, NA, NA, 0, NA, 0, 0, NA, 0, NA, NA, NA, 0, ~</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ R001        &lt;dbl&gt; NA, NA, 826.9, NA, NA, NA, 882.4, NA, 770.5, 889.4, NA, 88~</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ R002        &lt;int&gt; NA, NA, 3, NA, NA, NA, 3, NA, 2, 3, NA, 3, NA, NA, NA, 3, ~</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ R003        &lt;int&gt; NA, NA, 5, NA, NA, NA, 5, NA, 4, 5, NA, 5, NA, NA, NA, 5, ~</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ E001        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ E002        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ E003        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ E004        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ S001        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ S002        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ S003        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ S004        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ mode        &lt;chr&gt; NA, NA, &quot;public_transport&quot;, NA, NA, NA, &quot;public_transport&quot;~</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ peak        &lt;int&gt; NA, NA, 1, NA, NA, NA, 1, NA, 1, 1, NA, 1, 1, NA, NA, 1, 1~</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATT15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATQ15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATD15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAST15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASB15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASM15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASA15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAET15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEI15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEF15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEM15     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATT30     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0001, NA, 0.0001, 0.0001, NA~</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATQ30     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0001, NA, 0.0001, 0.0001, NA~</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATD30     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0001, NA, 0.0001, 0.0001, NA~</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAST30     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0000, NA, 0.0000, 0.0000, NA~</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASB30     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0000, NA, 0.0000, 0.0000, NA~</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASM30     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0000, NA, 0.0000, 0.0000, NA~</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASA30     &lt;dbl&gt; NA, NA, 0, NA, NA, NA, 0, NA, 0, 0, NA, 0, 0, NA, NA, 0, 0~</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAET30     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0000, NA, 0.0000, 0.0000, NA~</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEI30     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0000, NA, 0.0000, 0.0000, NA~</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEF30     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0000, NA, 0.0000, 0.0000, NA~</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEM30     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0000, NA, 0.0000, 0.0000, NA~</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATT45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATQ45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATD45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAST45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASB45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASM45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASA45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAET45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEI45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEF45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEM45     &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATT60     &lt;dbl&gt; NA, NA, 0.0035, NA, NA, NA, 0.0065, NA, 0.0124, 0.0089, NA~</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATQ60     &lt;dbl&gt; NA, NA, 0.0032, NA, NA, NA, 0.0060, NA, 0.0135, 0.0086, NA~</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATD60     &lt;dbl&gt; NA, NA, 0.0039, NA, NA, NA, 0.0069, NA, 0.0135, 0.0096, NA~</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAST60     &lt;dbl&gt; NA, NA, 0.0044, NA, NA, NA, 0.0133, NA, 0.0221, 0.0133, NA~</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASB60     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0136, NA, 0.0272, 0.0136, NA~</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASM60     &lt;dbl&gt; NA, NA, 0.0046, NA, NA, NA, 0.0138, NA, 0.0229, 0.0138, NA~</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASA60     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0000, NA, 0.0000, 0.0000, NA~</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAET60     &lt;dbl&gt; NA, NA, 0.0017, NA, NA, NA, 0.0155, NA, 0.0276, 0.0190, NA~</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEI60     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0142, NA, 0.0228, 0.0171, NA~</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEF60     &lt;dbl&gt; NA, NA, 0.0029, NA, NA, NA, 0.0175, NA, 0.0322, 0.0205, NA~</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEM60     &lt;dbl&gt; NA, NA, 0.0000, NA, NA, NA, 0.0204, NA, 0.0340, 0.0272, NA~</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATT90     &lt;dbl&gt; NA, NA, 0.0640, NA, NA, NA, 0.1059, NA, 0.2062, 0.1846, NA~</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATQ90     &lt;dbl&gt; NA, NA, 0.0644, NA, NA, NA, 0.1069, NA, 0.1934, 0.1884, NA~</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATD90     &lt;dbl&gt; NA, NA, 0.0631, NA, NA, NA, 0.1018, NA, 0.1934, 0.1744, NA~</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAST90     &lt;dbl&gt; NA, NA, 0.0708, NA, NA, NA, 0.1106, NA, 0.1858, 0.1814, NA~</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASB90     &lt;dbl&gt; NA, NA, 0.0612, NA, NA, NA, 0.0952, NA, 0.1293, 0.1497, NA~</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASM90     &lt;dbl&gt; NA, NA, 0.0642, NA, NA, NA, 0.1009, NA, 0.1789, 0.1743, NA~</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASA90     &lt;dbl&gt; NA, NA, 0.0833, NA, NA, NA, 0.1944, NA, 0.2500, 0.3333, NA~</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAET90     &lt;dbl&gt; NA, NA, 0.0777, NA, NA, NA, 0.0898, NA, 0.1036, 0.1123, NA~</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEI90     &lt;dbl&gt; NA, NA, 0.0741, NA, NA, NA, 0.0798, NA, 0.0798, 0.0997, NA~</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEF90     &lt;dbl&gt; NA, NA, 0.0848, NA, NA, NA, 0.0994, NA, 0.1170, 0.1170, NA~</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEM90     &lt;dbl&gt; NA, NA, 0.0680, NA, NA, NA, 0.0884, NA, 0.1156, 0.1020, NA~</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATT120    &lt;dbl&gt; NA, NA, 0.7867, NA, NA, NA, 0.8521, NA, 0.8961, 0.8833, NA~</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATQ120    &lt;dbl&gt; NA, NA, 0.7917, NA, NA, NA, 0.8587, NA, 0.8847, 0.8877, NA~</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMATD120    &lt;dbl&gt; NA, NA, 0.7699, NA, NA, NA, 0.8348, NA, 0.8847, 0.8706, NA~</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAST120    &lt;dbl&gt; NA, NA, 0.7168, NA, NA, NA, 0.7566, NA, 0.8053, 0.7876, NA~</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASB120    &lt;dbl&gt; NA, NA, 0.6054, NA, NA, NA, 0.6531, NA, 0.7075, 0.6803, NA~</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASM120    &lt;dbl&gt; NA, NA, 0.7064, NA, NA, NA, 0.7477, NA, 0.7982, 0.7798, NA~</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMASA120    &lt;dbl&gt; NA, NA, 1.0000, NA, NA, NA, 1.0000, NA, 1.0000, 1.0000, NA~</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAET120    &lt;dbl&gt; NA, NA, 0.5371, NA, NA, NA, 0.6114, NA, 0.6701, 0.6408, NA~</span></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEI120    &lt;dbl&gt; NA, NA, 0.4587, NA, NA, NA, 0.5242, NA, 0.5869, 0.5527, NA~</span></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEF120    &lt;dbl&gt; NA, NA, 0.5731, NA, NA, NA, 0.6550, NA, 0.7135, 0.6842, NA~</span></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ CMAEM120    &lt;dbl&gt; NA, NA, 0.6259, NA, NA, NA, 0.7143, NA, 0.7755, 0.7483, NA~</span></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ TMIST       &lt;dbl&gt; NA, NA, 58.5583, NA, NA, NA, 48.1750, NA, 47.8833, 41.5667~</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ TMISB       &lt;dbl&gt; NA, NA, 64.2750, NA, NA, NA, 55.0417, NA, 51.7833, 50.6917~</span></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ TMISM       &lt;dbl&gt; NA, NA, 58.5583, NA, NA, NA, 48.1750, NA, 47.8833, 41.5667~</span></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ TMISA       &lt;dbl&gt; NA, NA, 87.6500, NA, NA, NA, 82.3500, NA, 76.2500, 76.7167~</span></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ TMIET       &lt;dbl&gt; NA, NA, 48.6167, NA, NA, NA, 40.8000, NA, 41.1667, 38.1333~</span></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ TMIEI       &lt;dbl&gt; NA, NA, 60.5750, NA, NA, NA, 53.2000, NA, 49.9000, 44.6750~</span></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ TMIEF       &lt;dbl&gt; NA, NA, 48.6167, NA, NA, NA, 40.8000, NA, 41.1667, 38.1333~</span></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ TMIEM       &lt;dbl&gt; NA, NA, 61.1667, NA, NA, NA, 52.7417, NA, 51.0333, 46.9000~</span></span></code></pre></div>
+<p>As you can see, a lot of data has been returned from <code>read_access()</code>. The dataframe’s columns can be classified into 4 groups, according to the data they contain: <em>geographic</em>, <em>sociodemographic</em>, <em>land use</em>, and <em>accessibility</em>. The following section explains the contents of each column.</p>
+</div>
+<div id="data-dictionary" class="section level2">
+<h2>Data dictionary</h2>
+<div id="geographic-variables" class="section level3">
+<h3><strong>Geographic</strong> variables</h3>
+<table>
+<thead>
+<tr class="header">
+<th><strong>column</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>abbrev_muni</code></td>
+<td>Abbreviation of city name (3 letters)</td>
+</tr>
+<tr class="even">
+<td><code>name_muni</code></td>
+<td>City name</td>
+</tr>
+<tr class="odd">
+<td><code>code_muni</code></td>
+<td>7-digit code of each city</td>
+</tr>
+<tr class="even">
+<td><code>id_hex</code></td>
+<td>Unique id of hexagonal cell</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sociodemographic-variables" class="section level3">
+<h3><strong>Sociodemographic</strong> variables</h3>
+<table>
+<thead>
+<tr class="header">
+<th><strong>column</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>P001</code></td>
+<td>Total number of residents</td>
+</tr>
+<tr class="even">
+<td><code>P002</code></td>
+<td>Number of white residents</td>
+</tr>
+<tr class="odd">
+<td><code>P003</code></td>
+<td>Number of black residents</td>
+</tr>
+<tr class="even">
+<td><code>P004</code></td>
+<td>Number of indiginous residents</td>
+</tr>
+<tr class="odd">
+<td><code>P005</code></td>
+<td>Number of asian-descendents residents</td>
+</tr>
+<tr class="even">
+<td><code>R001</code></td>
+<td>Average household income per capita</td>
+</tr>
+<tr class="odd">
+<td><code>R002</code></td>
+<td>Income quintile group</td>
+</tr>
+<tr class="even">
+<td><code>R003</code></td>
+<td>Income decile group</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="land-use-variables" class="section level3">
+<h3><strong>Land use</strong> variables</h3>
+<table>
+<thead>
+<tr class="header">
+<th><strong>column</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>T001</code></td>
+<td>Total number of formal jobs</td>
+</tr>
+<tr class="even">
+<td><code>T002</code></td>
+<td>Total number of formal jobs with primary education</td>
+</tr>
+<tr class="odd">
+<td><code>T003</code></td>
+<td>Number of formal jobs with secundary education</td>
+</tr>
+<tr class="even">
+<td><code>T004</code></td>
+<td>Number of formal jobs with tertiary education</td>
+</tr>
+<tr class="odd">
+<td><code>E001</code></td>
+<td>Total number of public schools</td>
+</tr>
+<tr class="even">
+<td><code>E002</code></td>
+<td>Number of public schools - early childhood</td>
+</tr>
+<tr class="odd">
+<td><code>E003</code></td>
+<td>Number of public schools - elementary schools</td>
+</tr>
+<tr class="even">
+<td><code>E004</code></td>
+<td>Number of public schools - high schools</td>
+</tr>
+<tr class="odd">
+<td><code>S001</code></td>
+<td>Total number of healthcare facilities</td>
+</tr>
+<tr class="even">
+<td><code>S002</code></td>
+<td>Number of healthcare facilities - low complexity</td>
+</tr>
+<tr class="odd">
+<td><code>S003</code></td>
+<td>Number of healthcare facilities - medium complexity</td>
+</tr>
+<tr class="even">
+<td><code>S004</code></td>
+<td>Number of healthcare facilities - high complexity</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="accessibility-variables" class="section level3">
+<h3><strong>Accessibility</strong> variables</h3>
+<p>The name of the columns with accessibility estimates are the junction of three components:</p>
+<ol style="list-style-type: decimal">
+<li><p>Indicator</p></li>
+<li><p>Type of opportunity</p></li>
+<li><p>Time thresold (if applicable)</p></li>
+</ol>
+<p><strong>1) Indicator</strong></p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Indicator</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Note</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>CMA</code></td>
+<td>Cumulative opportunity measure (active)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>TMI</code></td>
+<td>Travel time to closest opportunity</td>
+<td>Value = Inf when travel time is longer</td>
+</tr>
+<tr class="odd">
+<td>than 2h (public transport) or 1,5h (walking or bicycle)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>2) Type of opportunity</strong></p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Indicator</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>TT</code></td>
+<td>All jobs</td>
+</tr>
+<tr class="even">
+<td><code>TQ</code></td>
+<td>Total jobs with partial match between job education and income quintile</td>
+</tr>
+<tr class="odd">
+<td><code>TD</code></td>
+<td>Total jobs with partial match between job education and income decile</td>
+</tr>
+<tr class="even">
+<td><code>ST</code></td>
+<td>All healthcare facilities</td>
+</tr>
+<tr class="odd">
+<td><code>SB</code></td>
+<td>Healthcare facilities - Low complexity</td>
+</tr>
+<tr class="even">
+<td><code>SM</code></td>
+<td>Healthcare facilities - Medium complexity</td>
+</tr>
+<tr class="odd">
+<td><code>SA</code></td>
+<td>Healthcare facilities - High complexity</td>
+</tr>
+<tr class="even">
+<td><code>ET</code></td>
+<td>All public schools</td>
+</tr>
+<tr class="odd">
+<td><code>EI</code></td>
+<td>Public schools - early childhood</td>
+</tr>
+<tr class="even">
+<td><code>EF</code></td>
+<td>Public schools - elementary schools</td>
+</tr>
+<tr class="odd">
+<td><code>EM</code></td>
+<td>Public schools - high schools</td>
+</tr>
+</tbody>
+</table>
+<p><strong>3) Time thresold (only applicable to CMA estimates)</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th><strong>Time thresold</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Note - Only applicable to:</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>15</code></td>
+<td>Opportunities accessible within 15 min.</td>
+<td>Active transport modes</td>
+</tr>
+<tr class="even">
+<td><code>30</code></td>
+<td>Opportunities accessible within 30 min.</td>
+<td>All transport modes</td>
+</tr>
+<tr class="odd">
+<td><code>45</code></td>
+<td>Opportunities accessible within 45 min.</td>
+<td>Active transport modes</td>
+</tr>
+<tr class="even">
+<td><code>60</code></td>
+<td>Opportunities accessible within 60 min.</td>
+<td>All transport modes</td>
+</tr>
+<tr class="odd">
+<td><code>90</code></td>
+<td>Opportunities accessible within 90 min.</td>
+<td>Public transport</td>
+</tr>
+<tr class="even">
+<td><code>120</code></td>
+<td>Opportunities accessible within 120 min.</td>
+<td>Public transport</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="next-steps" class="section level2">
+<h2>Next Steps</h2>
+<p>Now, check the next vignettes for demonstrations on how to use <code>aopdata</code> to produce <a href="landuse_maps.html">land use</a> and <a href="access_maps.html">accessibility</a> maps, as well as to analyse <a href="access_inequality.html">accessibility inequalities</a>.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

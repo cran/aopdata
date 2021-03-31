@@ -11,6 +11,7 @@ library(aopdata)
 library(sf)
 library(ggplot2)
 library(data.table)
+library(units)
 
 ## ---- message = FALSE---------------------------------------------------------
 

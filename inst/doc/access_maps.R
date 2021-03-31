@@ -21,8 +21,6 @@ df <- aopdata::read_access(city='Curitiba',
                       showProgress = F)
 
 ## ---- message = FALSE---------------------------------------------------------
-
-# plot map accessibility
 ggplot() +
   geom_sf(data=df, aes(fill=CMATT60), color=NA, alpha=.9) +
   scale_fill_viridis_c(option = "inferno", labels=scales::percent) +
@@ -33,17 +31,11 @@ ggplot() +
 
 
 ## ---- message = FALSE, eval=FALSE---------------------------------------------
-#  
-#  # plot map Schools
 #  ggplot() +
-#    geom_sf(data=df, aes(fill=S001), color=NA, alpha=.7) +
-#    scale_fill_viridis_c(option = "inferno") +
-#    labs(title='Spatial distribution of public schools', fill="N. of schools") +
+#    geom_sf(data=df, aes(fill=CMAET30), color=NA, alpha=.7) +
+#    scale_fill_viridis_c(option = "inferno", labels=scales::percent) +
+#      labs(title='Proportion of schools accessible', fill="Accessibility",
+#         subtitle='by public transport in less than 30 min.', fill="N. of schools") +
 #    theme_void()
 #  
-#  ggplot() +
-#    geom_sf(data=df, aes(fill=df$S001), color=NA, alpha=.7) +
-#    scale_fill_viridis_c(option = "inferno") +
-#    labs(title='Spatial distribution of public schools', fill="N. of schools") +
-#    theme_void()
 

@@ -15,8 +15,8 @@
 #'
 select_city_input <- function(temp_meta=temp_meta, city=NULL){
 
-  # NULL
-  if (is.null(city)){  stop(paste0("Error: Invalid Value to argument 'city'. It must be one of the following: ",
+  # NULL or numeric
+  if(! is.character(city) ){stop(paste0("Error: Invalid Value to argument 'city'. It must be one of the following: ",
                                 paste(unique(temp_meta$name_muni),collapse = " | "))) }
 
   # 3 letter-abbreviation
@@ -147,10 +147,13 @@ select_metadata <- function(t=NULL, c=NULL, y=NULL, m=NULL){
   # Select city input
   temp_meta <- select_city_input(temp_meta, city=c)
 
-  if(t=='access'){
-
-    # Select mode and year
+  # select year input
+  if(t %in% c('access','landuse', 'land_use', 'population')){
     temp_meta <- select_year_input(temp_meta, year=y)
+  }
+
+  # select mode input
+  if(t=='access'){
     temp_meta <- select_mode_input(temp_meta, mode=m)
     }
 
@@ -177,31 +180,51 @@ download_data <- function(file_url, progress_bar = showProgress){
 
   if( !(progress_bar %in% c(T, F)) ){ stop("Value to argument 'showProgress' has to be either TRUE or FALSE") }
 
-## one single file
+  ## one single file
 
-  if(length(file_url)==1 & progress_bar == TRUE){
+  if (length(file_url)==1 & progress_bar == TRUE) {
 
-    # download file
+    # location of temp_file
     temps <- paste0(tempdir(),"/", unlist(lapply(strsplit(file_url,"/"),tail,n=1L)))
-    httr::GET(url=file_url, httr::progress(), httr::write_disk(temps, overwrite = T))
 
-    # load data
-    temp_data <- load_data(file_url, temps)
-    return(temp_data)
+    # check if file has not been downloaded already. If not, download it
+    if (!file.exists(temps)) {
+
+      # test server connection
+      check_connection(file_url[1])
+
+      # download data
+      httr::GET(url=file_url, httr::progress(), httr::write_disk(temps, overwrite = T))
     }
 
-  else if(length(file_url)==1 & progress_bar == FALSE){
-
-    # download file
-    temps <- paste0(tempdir(),"/", unlist(lapply(strsplit(file_url,"/"),tail,n=1L)))
-    httr::GET(url=file_url, httr::write_disk(temps, overwrite = T))
-
-    # load data
-    temp_data <- load_data(file_url, temps)
-    return(temp_data)
+    # load gpkg to memory
+    temp_sf <- load_data(file_url, temps)
+    return(temp_sf)
   }
 
-## multiple files
+  else if (length(file_url)==1 & progress_bar == FALSE) {
+
+    # location of temp_file
+    temps <- paste0(tempdir(),"/", unlist(lapply(strsplit(file_url,"/"),tail,n=1L)))
+
+    # check if file has not been downloaded already. If not, download it
+    if (!file.exists(temps)) {
+
+      # test server connection
+      check_connection(file_url[1])
+
+      # download data
+      httr::GET(url=file_url, httr::progress(), httr::write_disk(temps, overwrite = T))
+    }
+
+    # load gpkg to memory
+    temp_sf <- load_data(file_url, temps)
+    return(temp_sf)
+  }
+
+
+
+  ## multiple files
 
   else if(length(file_url) > 1 & progress_bar == TRUE) {
 
@@ -209,35 +232,60 @@ download_data <- function(file_url, progress_bar = showProgress){
     total <- length(file_url)
     pb <- utils::txtProgressBar(min = 0, max = total, style = 3)
 
+    # test server connection
+    check_connection(file_url[1])
+
     # download files
     lapply(X=file_url, function(x){
-      i <- match(c(x),file_url)
-      httr::GET(url=x, #httr::progress(),
-                httr::write_disk(paste0(tempdir(),"/", unlist(lapply(strsplit(x,"/"),tail,n=1L))), overwrite = T))
-      utils::setTxtProgressBar(pb, i)})
+
+      # location of temp_file
+      temps <- paste0(tempdir(),"/", unlist(lapply(strsplit(x,"/"),tail,n=1L)))
+
+      # check if file has not been downloaded already. If not, download it
+      if (!file.exists(temps)) {
+        i <- match(c(x),file_url)
+        httr::GET(url=x, #httr::progress(),
+                  httr::write_disk(temps, overwrite = T))
+        utils::setTxtProgressBar(pb, i)
+      }
+    })
 
     # closing progress bar
     close(pb)
 
-    # load data
-    temp_data <- load_data(file_url)
-    return(temp_data)
-    }
+    # load gpkg
+    temp_sf <- load_data(file_url)
+    return(temp_sf)
+
+
+  }
 
   else if(length(file_url) > 1 & progress_bar == FALSE) {
 
+    # test server connection
+    check_connection(file_url[1])
+
     # download files
     lapply(X=file_url, function(x){
-      i <- match(c(x),file_url)
-      httr::GET(url=x, #httr::progress(),
-                httr::write_disk(paste0(tempdir(),"/", unlist(lapply(strsplit(x,"/"),tail,n=1L))), overwrite = T))})
 
-    # load data
-    temp_data <- load_data(file_url)
-    return(temp_data)
-    }
+      # location of temp_file
+      temps <- paste0(tempdir(),"/", unlist(lapply(strsplit(x,"/"),tail,n=1L)))
+
+      # check if file has not been downloaded already. If not, download it
+      if (!file.exists(temps)) {
+        i <- match(c(x),file_url)
+        httr::GET(url=x, #httr::progress(),
+                  httr::write_disk(temps, overwrite = T))
+      }
+    })
+
+
+    # load gpkg
+    temp_sf <- load_data(file_url)
+    return(temp_sf)
+
+  }
 }
-
 
 
 
@@ -313,15 +361,15 @@ rm_accent <- function(str, pattern="all") {
   if(!is.character(str))
     str <- as.character(str)
   pattern <- unique(pattern)
-  if(any(pattern=="\u00c7")) # "Ç"
-    pattern[pattern=="\u00c7"] <- "\u00e7" # "Ç"] <- "ç"
+  if(any(pattern=="\u00c7"))
+    pattern[pattern=="\u00c7"] <- "\u00e7"
   symbols <- c(
-    acute = "\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00fd\u00dd", # "áéíóúÁÉÍÓÚýÝ",
-    grave = "\u00e0\u00e8\u00ec\u00f2\u00f9\u00c0\u00c8\u00cc\u00d2\u00d9", # "àèìòùÀÈÌÒÙ",
-    circunflex = "\u00e2\u00ea\u00ee\u00f4\u00fb\u00c2\u00ca\u00ce\u00d4\u00db", # "âêîôûÂÊÎÔÛ",
-    tilde = "\u00e3\u00f5\u00c3\u00d5\u00f1\u00d1", # "ãõÃÕñÑ",
-    umlaut = "\u00e4\u00eb\u00ef\u00f6\u00fc\u00c4\u00cb\u00cf\u00d6\u00dc\u00ff", # "äëïöüÄËÏÖÜÿ",
-    cedil = "\u00e7\u00c7" # "çÇ"
+    acute = "\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00fd\u00dd",
+    grave = "\u00e0\u00e8\u00ec\u00f2\u00f9\u00c0\u00c8\u00cc\u00d2\u00d9",
+    circunflex = "\u00e2\u00ea\u00ee\u00f4\u00fb\u00c2\u00ca\u00ce\u00d4\u00db",
+    tilde = "\u00e3\u00f5\u00c3\u00d5\u00f1\u00d1",
+    umlaut = "\u00e4\u00eb\u00ef\u00f6\u00fc\u00c4\u00cb\u00cf\u00d6\u00dc\u00ff",
+    cedil = "\u00e7\u00c7"
   )
   nudeSymbols <- c(
     acute = "aeiouAEIOUyY",
@@ -332,7 +380,7 @@ rm_accent <- function(str, pattern="all") {
     cedil = "cC"
   )
   accentTypes <- c("\u00b4", "`", "^", "~", "\u00a8", "\u00e7") # c("´","`","^","~","¨","ç")
-  if(any(c("all","al","a","todos","t","to","tod","todo")%in%pattern)) # opcao retirar todos
+  if(any(c("all","al","a","todos","t","to","tod","todo")%in%pattern))
     return(chartr(paste(symbols, collapse=""), paste(nudeSymbols, collapse=""), str))
   for(i in which(accentTypes%in%pattern))
     str <- chartr(symbols[i],nudeSymbols[i], str)
@@ -377,10 +425,10 @@ aop_spatial_join <- function(aop_df, aop_sf){
 #'
 #' @description Merges landuse and access data
 #'
-#' @param aop_landuse A `data.frame` of aop land use data
-#' @param aop_access A `data.frame` of aop access data
+#' @param aop_landuse A `data.table` of aop land use data
+#' @param aop_access A `data.table` of aop access data
 #'
-#' @return Returns a `data.frame sf` with landuse and access data
+#' @return Returns a `data.table` with landuse and access data
 #' @export
 #' @family support functions
 #'
@@ -392,9 +440,86 @@ aop_merge <- function(aop_landuse, aop_access){
   data.table::setkeyv(aop_access, c('abbrev_muni', 'name_muni', 'code_muni', 'id_hex'))
 
   # merge
-  aop <- data.table::merge.data.table(aop_landuse, aop_access, by = c('abbrev_muni', 'name_muni', 'code_muni', 'id_hex'))
+  aop <- data.table::merge.data.table(aop_landuse, aop_access, by = c('abbrev_muni', 'name_muni', 'code_muni', 'id_hex'), all = TRUE)
 
   return(aop)
 }
+
+
+
+
+#' Check internet connection with Ipea server
+#'
+#' @description
+#' Checks if there is internet connection to Ipea server to download aop data.
+#'
+#' @param file_url A string with the file_url address of an aop dataset
+#'
+#' @return Logic `TRUE or `FALSE`.
+#'
+#' @export
+#' @family support functions
+#'
+check_connection <- function(file_url = 'https://www.ipea.gov.br/geobr/aopdata/metadata/metadata.csv'){
+
+  # check internet connection
+  if (!curl::has_internet()) {
+    message("No internet connection.")
+    return(invisible(NULL))
+  }
+
+  # test server connection
+    # crul::ok(file_url)
+  if (httr::http_error(httr::GET(file_url))) {
+    message("Problem connecting to data server. Please try aopdata again in a few minutes.")
+    return(invisible(NULL))
+    }
+}
+
+# #' Fail gracefully if Ipea server is not available
+# #'
+# #' The function allows to fail gracefully with an informative message
+# #' if the Wikisource resource is not available (and not give a check warning nor error).
+# #'
+# #' @details See full discussion to be compliante with the CRAN policy
+# #' <https://community.rstudio.com/t/internet-resources-should-fail-gracefully/49199>
+# #'
+# #' @param file_url A remote URL.
+# #' @return Message.
+# #'
+# #' @export
+# #' @family support functions
+# #'
+# gracefully_fail <- function(file_url = 'https://www.ipea.gov.br/geobr/aopdata/metadata/metadata.csv') {
+#   try_GET <- function(x, ...) {
+#     tryCatch(
+#       httr::GET(url = x, httr::timeout(600), ...), #timeout 10 minutes
+#       error = function(e) conditionMessage(e),
+#       warning = function(w) conditionMessage(w)
+#     )
+#   }
+#   is_response <- function(x) {
+#     class(x) == "response"
+#   }
+#
+#   # First check internet connection
+#   if (!curl::has_internet()) {
+#     message("No internet connection.")
+#     return(invisible(NULL))
+#   }
+#   # Then try for timeout problems
+#   resp <- try_GET(file_url)
+#   if (!is_response(resp)) {
+#     message(resp)
+#     return(invisible(NULL))
+#   }
+#   # Then stop if status > 400
+#   if (httr::http_error(resp)) {
+#     httr::message_for_status(resp)
+#     return(invisible(NULL))
+#   }
+#
+# }
+
 
 # nocov end

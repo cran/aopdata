@@ -67,11 +67,11 @@
 #' @family accessibility data functions
 #' @examples \donttest{
 #' # Read accessibility estimates of a single city
-#' df <- read_access(city = 'Fortaleza', mode = 'walk', year = 2019, showProgress = FALSE)
-#' df <- read_access(city = 'for', mode = 'walk', year = 2019, showProgress = FALSE)
+#' df <- read_access(city = 'Fortaleza', mode = 'public_transport', year = 2019, showProgress = FALSE)
+#' df <- read_access(city = 'for', mode = 'public_transport', year = 2019, showProgress = FALSE)
 #'
 #' # Read accessibility estimates for all cities
-#' all <- read_access(city = 'all', mode = 'public_transport', year = 2019)
+#' all <- read_access(city = 'all', mode = 'walk', year = 2019, showProgress = FALSE)
 #'}
 read_access <- function(city, mode = 'walk', peak = TRUE, year = 2019, geometry = FALSE, showProgress = TRUE){
 
@@ -93,9 +93,15 @@ read_access <- function(city, mode = 'walk', peak = TRUE, year = 2019, geometry 
   aop_access <- download_data(file_url, progress_bar = showProgress)
 
   # peak Vs off-peak
-  cities_with_pt <- (city %in% c('for', 'rec', 'bho', 'rio', 'spo', 'cur', 'poa') |
-                    city %in% c('Fortaleza', 'Recife', 'Belo Horizonte',
-                                'Rio de Janeiro', 'S\u00e3o Paulo', 'Curitiba', 'Porto Alegre'))
+    city <- tolower(city)
+    # remove accents
+    city <- base::iconv(city, to="ASCII//TRANSLIT")
+
+  cities_with_pt <- ( all(city %in% c('for', 'rec', 'bho', 'rio', 'spo', 'cur', 'poa')) |
+                    all(city %in% c('fortaleza', 'recife', 'belo horizonte',
+                                'rio de janeiro', 'sao paulo', 'curitiba', 'porto alegre')) )
+
+  if (isFALSE(cities_with_pt) & mode == 'public_transport') {stop("One of the selected cities does not have public transport data for that year.")}
 
   if(peak==FALSE & mode == 'public_transport' & cities_with_pt){
                   aop_access <- subset(aop_access, peak == 0)

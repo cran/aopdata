@@ -16,17 +16,17 @@
 select_city_input <- function(temp_meta=temp_meta, city=NULL){
 
   # NULL or numeric
-  if(! is.character(city) ){stop(paste0("Error: Invalid Value to argument 'city'. It must be one of the following: ",
+  if( !is.character(city) | any(nchar(city)<3) ){stop(paste0("Error: Invalid Value to argument 'city'. It must be one of the following: ",
                                 paste(unique(temp_meta$name_muni),collapse = " | "))) }
 
   # 3 letter-abbreviation
-  if (nchar(city)[1]==3) {
+  if (all(nchar(city)==3)) {
 
       # valid input 'all'
-      if (city %in% 'all'){ return(temp_meta) }
+      if (length(city)==1 & city[1] %in% 'all') { return(temp_meta) }
 
       # valid input
-      if (city %in% temp_meta$city){ temp_meta <- temp_meta[ temp_meta$city %in% city, ]
+      if (all(city %in% temp_meta$city)) { temp_meta <- temp_meta[ temp_meta$city %in% city, ]
                                   return(temp_meta) }
 
 
@@ -37,13 +37,14 @@ select_city_input <- function(temp_meta=temp_meta, city=NULL){
 
 
   # full name
-  if (nchar(city)[1]>3) {
+  if (all(nchar(city)>3)) {
 
     city <- tolower(city)
-    city <- rm_accent(city)
+    # remove accents
+    city <- base::iconv(city, to="ASCII//TRANSLIT")
 
     # valid input
-    if (city %in% temp_meta$name_muni){ temp_meta <- temp_meta[ temp_meta$name_muni %in% city, ]
+    if (all(city %in% temp_meta$name_muni)) { temp_meta <- temp_meta[ temp_meta$name_muni %in% city, ]
                                         return(temp_meta)
                                       }
 
@@ -214,7 +215,7 @@ download_data <- function(file_url, progress_bar = showProgress){
       check_connection(file_url[1])
 
       # download data
-      httr::GET(url=file_url, httr::progress(), httr::write_disk(temps, overwrite = T))
+      httr::GET(url=file_url, httr::write_disk(temps, overwrite = T))
     }
 
     # load gpkg to memory
@@ -226,7 +227,7 @@ download_data <- function(file_url, progress_bar = showProgress){
 
   ## multiple files
 
-  else if(length(file_url) > 1 & progress_bar == TRUE) {
+  else if (length(file_url) > 1 & progress_bar == TRUE) {
 
     # input for progress bar
     total <- length(file_url)
@@ -308,7 +309,7 @@ load_data <- function(file_url, temps=NULL){
   if( file_url[1] %like% '.gpkg' ){ fformat<- 'gpkg'}
 
   ### one single file
-  if(length(file_url)==1){
+  if (length(file_url)==1) {
 
     # read file
     if( fformat=='csv' ){ temp <- data.table::fread(temps) }
@@ -316,7 +317,7 @@ load_data <- function(file_url, temps=NULL){
     return(temp)
   }
 
-  else if(length(file_url) > 1){
+  else if (length(file_url) > 1) {
 
     # read files and pile them up
     files <- unlist(lapply(strsplit(file_url,"/"), tail, n = 1L))
@@ -341,52 +342,6 @@ load_data <- function(file_url, temps=NULL){
   temp_data <- load_data(file_url, temps)
   return(temp_data)
 }
-
-
-
-
-#' Remove accents from string
-#'
-#' @description Removes non-ASCII characters from a string.
-#'
-#' @param str A string
-#' @param pattern A pattern
-#'
-#' @return Returns a string with non-ASCII characters replaced with "\'uxxxx" escapes
-#'
-#' @export
-#' @family support functions
-#'
-rm_accent <- function(str, pattern="all") {
-  if(!is.character(str))
-    str <- as.character(str)
-  pattern <- unique(pattern)
-  if(any(pattern=="\u00c7"))
-    pattern[pattern=="\u00c7"] <- "\u00e7"
-  symbols <- c(
-    acute = "\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00fd\u00dd",
-    grave = "\u00e0\u00e8\u00ec\u00f2\u00f9\u00c0\u00c8\u00cc\u00d2\u00d9",
-    circunflex = "\u00e2\u00ea\u00ee\u00f4\u00fb\u00c2\u00ca\u00ce\u00d4\u00db",
-    tilde = "\u00e3\u00f5\u00c3\u00d5\u00f1\u00d1",
-    umlaut = "\u00e4\u00eb\u00ef\u00f6\u00fc\u00c4\u00cb\u00cf\u00d6\u00dc\u00ff",
-    cedil = "\u00e7\u00c7"
-  )
-  nudeSymbols <- c(
-    acute = "aeiouAEIOUyY",
-    grave = "aeiouAEIOU",
-    circunflex = "aeiouAEIOU",
-    tilde = "aoAOnN",
-    umlaut = "aeiouAEIOUy",
-    cedil = "cC"
-  )
-  accentTypes <- c("\u00b4", "`", "^", "~", "\u00a8", "\u00e7") # c("´","`","^","~","¨","ç")
-  if(any(c("all","al","a","todos","t","to","tod","todo")%in%pattern))
-    return(chartr(paste(symbols, collapse=""), paste(nudeSymbols, collapse=""), str))
-  for(i in which(accentTypes%in%pattern))
-    str <- chartr(symbols[i],nudeSymbols[i], str)
-  return(str)
-}
-
 
 
 

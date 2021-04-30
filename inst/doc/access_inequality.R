@@ -15,7 +15,7 @@ library(units)
 
 ## ---- message = FALSE---------------------------------------------------------
 
-df <- read_access(city='Rio de Janeiro',
+df <- read_access(city='Curitiba',
                    mode='public_transport',
                    peak = T,
                    year=2019,

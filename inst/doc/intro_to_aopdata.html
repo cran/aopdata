@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2021-04-07" />
+<meta name="date" content="2021-04-28" />
 
 <title>Introduction to aopdata</title>
 
@@ -138,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <h1 class="title toc-ignore">Introduction to <code>aopdata</code></h1>
-<h4 class="date">2021-04-07</h4>
+<h4 class="date">2021-04-28</h4>
 
 
 
@@ -250,7 +250,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To download accessibility estimates, you can use the <code>read_access()</code> function. The example below downloads data on accessibility by walking for the city of Curitiba, in Southern Brazil. The function will download data for the year 2019, which is the one currently available.</p>
 <p><code>read_access()</code> can also download the spatial geometry of each city by setting <code>geometry = TRUE</code>, which can be used to map accessibility levels across the city. Refer to the <a href="landuse_maps.html">mapping population and land use</a> and <a href="access_maps.html">mapping urban accessibility</a> vignettes for examples of how to use the spatial geometry information. For now, we’ll set <code>geometry = FALSE</code> to download a dataframe with no spatial information.</p>
 <p>Let’s check the results:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(cur )</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(cur)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 4,683</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 96</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ abbrev_muni &lt;chr&gt; &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;cur&quot;, &quot;c~</span></span>

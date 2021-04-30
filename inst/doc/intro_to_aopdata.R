@@ -16,8 +16,12 @@ knitr::opts_chunk$set(
 library(aopdata)
 
 # A dataframe, with no spatial geometry
-cur <- read_access(city = 'Curitiba', mode = 'public_transport', year = 2019, geometry = FALSE)
+cur <- read_access(city = 'Curitiba', 
+                   mode = 'public_transport', 
+                   year = 2019, 
+                   geometry = FALSE,
+                   showProgress = FALSE)
 
 ## -----------------------------------------------------------------------------
-dplyr::glimpse(cur )
+dplyr::glimpse(cur)
 

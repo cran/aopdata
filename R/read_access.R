@@ -4,7 +4,7 @@
 #' Download annual estimates of access to employment, health and education
 #' services by transport mode and time of the day. See documentation 'Details'
 #' for the data dictionary. The data comes aggregated on a hexagonal grid based
-#' on the global H3 index at resolution 8, with a size of 357 meters (short
+#' on the global H3 index at resolution 9, with a size of 357 meters (short
 #' diagonal) and an area of 0.74 km2. More information about H3 at
 #' \url{https://h3geo.org/docs/core-library/restable/}.
 #'
@@ -65,14 +65,14 @@
 #'
 #' @export
 #' @family accessibility data functions
-#' @examples \donttest{
+#' @examples \dontrun{ if (interactive()) {
 #' # Read accessibility estimates of a single city
 #' df <- read_access(city = 'Fortaleza', mode = 'public_transport', year = 2019, showProgress = FALSE)
 #' df <- read_access(city = 'for', mode = 'public_transport', year = 2019, showProgress = FALSE)
 #'
 #' # Read accessibility estimates for all cities
 #' all <- read_access(city = 'all', mode = 'walk', year = 2019, showProgress = FALSE)
-#'}
+#'}}
 read_access <- function(city, mode = 'walk', peak = TRUE, year = 2019, geometry = FALSE, showProgress = TRUE){
 
   # checks
@@ -86,11 +86,19 @@ read_access <- function(city, mode = 'walk', peak = TRUE, year = 2019, geometry 
                                y=year,
                                m=mode)
 
+  # check if download failed
+  if (is.null(temp_meta)) { return(invisible(NULL)) }
+
+  message(paste0("Downloading accessibility data from year ", year))
+
   # list paths of files to download
   file_url <- as.character(temp_meta$download_path)
 
   # download files
   aop_access <- download_data(file_url, progress_bar = showProgress)
+
+  # check if download failed
+  if (is.null(aop_access)) { return(invisible(NULL)) }
 
   # peak Vs off-peak
     city <- tolower(city)

@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 #  # github
 #  devtools::install_github("ipeaGIT/aopdata", subdir = "r-package")
 
-## ----include=FALSE------------------------------------------------------------
+## ----message=TRUE-------------------------------------------------------------
 # load the aopdata package
 library(aopdata)
 

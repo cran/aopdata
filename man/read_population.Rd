@@ -30,7 +30,7 @@ A \code{data.frame} object or an \verb{sf data.frame} object
 }
 \description{
 Download population and socioeconomic data from the Brazilian Census aggregated
-on a hexagonal grid based on the global H3 index at resolution 8, with a size of
+on a hexagonal grid based on the global H3 index at resolution 9, with a size of
 357 meters (short diagonal) and an area of 0.74 km2. More information about H3 at
 \url{https://h3geo.org/docs/core-library/restable/}.
 }
@@ -53,13 +53,13 @@ on a hexagonal grid based on the global H3 index at resolution 8, with a size of
 }
 
 \examples{
-\donttest{
+\dontrun{ if (interactive()) {
 # a single city
 bho <- read_population(city = 'Belo Horizonte', year = 2010, showProgress = FALSE)
 bho <- read_population(city = 'bho', year = 2010, showProgress = FALSE)
 
 # all cities
 all <- read_population(city = 'all', year = 2010)
-}
+}}
 }
 \concept{population data functions}

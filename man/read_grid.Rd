@@ -17,7 +17,7 @@ An \verb{sf data.frame} object
 }
 \description{
 Results of the AOP project are spatially aggregated on a hexagonal grid based
-on the global H3 index at resolution 8, with a size of 357 meters (short
+on the global H3 index at resolution 9, with a size of 357 meters (short
 diagonal) and an area of 0.74 km2. More information about H3 at
 \url{https://h3geo.org/docs/core-library/restable/}.  See documentation
 'Details' for the data dictionary.
@@ -33,12 +33,12 @@ diagonal) and an area of 0.74 km2. More information about H3 at
 }
 
 \examples{
-\donttest{
+\dontrun{ if (interactive()) {
 # Read spatial grid of a single city
 nat <- read_grid(city = 'Natal', showProgress = FALSE)
 
 # Read spatial grid of all cities in the project
 # all <- read_grid(city = 'all', showProgress = FALSE)
-}
+}}
 }
 \concept{spatial data functions}

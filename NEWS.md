@@ -1,12 +1,27 @@
 # log history of aopdata package development
 
+
+
 -------------------------------------------------------
 
-# aopdata v0.2.2 (dev)
+# aopdata v0.2.3
+
+**Minor changes**
+* Download functions should now fail gracefully with an informative message when there are internet connection problems.
+* Remove `crul` from package dependencies.
+* skip examples on CRAN. Examples now only run on interactive R sessions.
+
+
+
+-------------------------------------------------------
+
+# aopdata v0.2.2
 
 **Minor changes**
 * Adds `crul` as a package dependency. Now aoptadata fails gracefully when there is internet connection problems. Closes #32.
-* `showProgress` now sets to `FALSE` in all tests and examples. Closes #32.
+* `showProgress` now sets to `FALSE` in all tests, examples and vignettes. Closes #32.
+* skip tests on CRAN. Tests are run only locally
+
 
 
 

@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Download population and socioeconomic data from the Brazilian Census aggregated
-#' on a hexagonal grid based on the global H3 index at resolution 8, with a size of
+#' on a hexagonal grid based on the global H3 index at resolution 9, with a size of
 #' 357 meters (short diagonal) and an area of 0.74 km2. More information about H3 at
 #' \url{https://h3geo.org/docs/core-library/restable/}.
 #'
@@ -37,14 +37,14 @@
 #'
 #' @export
 #' @family population data functions
-#' @examples \donttest{
+#' @examples \dontrun{ if (interactive()) {
 #' # a single city
 #' bho <- read_population(city = 'Belo Horizonte', year = 2010, showProgress = FALSE)
 #' bho <- read_population(city = 'bho', year = 2010, showProgress = FALSE)
 #'
 #' # all cities
 #' all <- read_population(city = 'all', year = 2010)
-#'}
+#'}}
 read_population <- function(city='bel', year = 2010, geometry = FALSE, showProgress = TRUE){
 
   # checks
@@ -56,11 +56,19 @@ read_population <- function(city='bel', year = 2010, geometry = FALSE, showProgr
                                c=city,
                                y=year)
 
+  # check if download failed
+  if (is.null(temp_meta)) { return(invisible(NULL)) }
+
+  message(paste0("Downloading population data from year ", year))
+
   # list paths of files to download
   file_url <- as.character(temp_meta$download_path)
 
   # download files
   aop_population <- download_data(file_url, progress_bar = showProgress)
+
+  # check if download failed
+  if (is.null(aop_population)) { return(invisible(NULL)) }
 
   # with Vs without spatial data
   if(geometry == FALSE){

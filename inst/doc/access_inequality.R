@@ -13,13 +13,13 @@ library(ggplot2)
 library(data.table)
 library(units)
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = TRUE----------------------------------------------------------
 
 df <- read_access(city='Curitiba',
                    mode='public_transport',
-                   peak = T,
+                   peak = TRUE,
                    year=2019,
-                   showProgress = F)
+                   showProgress = FALSE)
 
 ## ---- message = FALSE---------------------------------------------------------
 

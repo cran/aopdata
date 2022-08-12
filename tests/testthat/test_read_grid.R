@@ -7,8 +7,9 @@ testthat::skip_on_cran()
   test_that("read_grid expected behavior", {
 
     # whole file
-    expect_true(is(  read_grid(city='nat', showProgress = FALSE), 'sf'))
+    expect_true(is(  read_grid(city='nat', showProgress = FALSE), 'sf') )
     expect_true(is(  read_grid(city='Natal', showProgress = FALSE), 'sf'))
+    expect_true(is(  read_grid(city='all', showProgress = FALSE), 'sf'))
 
   })
 

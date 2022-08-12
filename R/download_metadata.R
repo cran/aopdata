@@ -1,13 +1,8 @@
-#' Support function to download metadata internally used in 'aopdata'
+#' Support function to download metadata internally used in aopdata
 #'
-#' @return A `data.frame` object with metadata and url of data sets
+#' @keywords internal
 #'
-#' @export
-#' @family general support functions
-#' @examples \dontrun{ if (interactive()) {
-#' df <- download_metadata()
-#'}}
-download_metadata <- function(){
+download_metadata <- function(){ # nocov start
 
   # create tempfile to save metadata
   tempf <- file.path(tempdir(), "metadata_aopdata.csv")
@@ -17,10 +12,17 @@ download_metadata <- function(){
 
   } else {
 
-    # test server connection
-    metadata_link <- 'https://www.ipea.gov.br/geobr/aopdata/metadata/metadata.csv'
-    check_con <- check_connection(metadata_link)
-    if(is.null(check_con) | isFALSE(check_con)){ return(invisible(NULL)) }
+    # test server connection with github
+    metadata_link <- 'https://github.com/ipeaGIT/aopdata/releases/download/v1.0.0/metadata.csv'
+    check_con <- check_connection(metadata_link, silent = TRUE)
+
+    # if connection with github fails, try connection with ipea
+    if(is.null(check_con) | isFALSE(check_con)){
+      metadata_link <- 'https://www.ipea.gov.br/geobr/aopdata/metadata/metadata.csv'
+      check_con <- check_connection(metadata_link)
+
+      if(is.null(check_con) | isFALSE(check_con)){ return(invisible(NULL)) }
+      }
 
     # download metadata to temp file
     httr::GET(url= metadata_link, httr::write_disk(tempf, overwrite = TRUE))
@@ -29,4 +31,5 @@ download_metadata <- function(){
  # read metadata
   metadata <- data.table::fread(tempf, stringsAsFactors=FALSE)
   return(metadata)
-  }
+
+}  # nocov end

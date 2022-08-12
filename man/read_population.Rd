@@ -5,7 +5,7 @@
 \title{Download population and socioeconomic data}
 \usage{
 read_population(
-  city = "bel",
+  city = NULL,
   year = 2010,
   geometry = FALSE,
   showProgress = TRUE
@@ -13,53 +13,89 @@ read_population(
 }
 \arguments{
 \item{city}{Character. A city name or three-letter abbreviation. If
-\code{city="all"}, results for all cities are loaded.}
+\code{city="all"}, the function returns data for all cities.}
 
-\item{year}{Numeric. A year number in YYYY format. Default set to 2019, the
-only year currently available.}
+\item{year}{Numeric. A year number in YYYY format. Defaults to 2019.}
 
 \item{geometry}{Logical. If \code{FALSE} (the default), returns a regular data.table
-of aop data. If \code{TRUE}, returns a an \verb{sf data.frame} with simple
+of aop data. If \code{TRUE}, returns an \verb{sf data.frame} with simple
 feature geometry of spatial hexagonal grid H3. See details in
 \link{read_grid}.}
 
-\item{showProgress}{Logical. Defaults to \code{TRUE} display progress bar}
+\item{showProgress}{Logical. Defaults to \code{TRUE} display progress bar.}
 }
 \value{
 A \code{data.frame} object or an \verb{sf data.frame} object
 }
 \description{
-Download population and socioeconomic data from the Brazilian Census aggregated
-on a hexagonal grid based on the global H3 index at resolution 9, with a size of
-357 meters (short diagonal) and an area of 0.74 km2. More information about H3 at
-\url{https://h3geo.org/docs/core-library/restable/}.
+Download population and socioeconomic data from the Brazilian Census at a fine
+spatial resolution for the cities included in the AOP project. See the
+documentation 'Details' for the data dictionary. The data set reports
+information for each heaxgon in a H3 spatial grid at resolution 9, with a
+side of 174 meters and an area of 0.10 km2. More information about H3 at \url{https://h3geo.org/docs/core-library/restable/}.
 }
 \section{Data dictionary:}{
 \tabular{llll}{
-   \strong{Data type} \tab \strong{column} \tab \strong{Description} \tab \strong{Value} \cr
-   geographic \tab \code{abbrev_muni} \tab Abbreviation of city name (3 letters) \tab  \cr
-   geographic \tab \code{name_muni} \tab City name \tab  \cr
-   geographic \tab \code{code_muni} \tab 7-digit code of each city \tab  \cr
-   geographic \tab \code{id_hex} \tab Unique id of hexagonal cell \tab  \cr
-   sociodemographic \tab \code{P001} \tab Total number of residents \tab  \cr
-   sociodemographic \tab \code{P002} \tab Number of white residents \tab  \cr
-   sociodemographic \tab \code{P003} \tab Number of black residents \tab  \cr
-   sociodemographic \tab \code{P004} \tab Number of indiginous residents \tab  \cr
-   sociodemographic \tab \code{P005} \tab Number of asian-descendents residents \tab  \cr
-   sociodemographic \tab \code{R001} \tab Average household income per capita \tab R$ (Brazilian Reais), values in 2010 \cr
-   sociodemographic \tab \code{R002} \tab Income quintile group \tab 1 (poorest), 2, 3, 4, 5 (richest) \cr
-   sociodemographic \tab \code{R003} \tab Income decile group \tab 1 (poorest), 2, 3, 4, 5, 6, 7, 8, 9, 10 (richest) \cr
+   \strong{data_type} \tab \strong{column} \tab \strong{description} \tab \strong{values} \cr
+   temporal \tab year \tab Year of reference \tab  \cr
+   geographic \tab id_hex \tab Unique id of hexagonal cell \tab  \cr
+   geographic \tab abbrev_muni \tab Abbreviation of city name (3 letters) \tab  \cr
+   geographic \tab name_muni \tab City name \tab  \cr
+   geographic \tab code_muni \tab 7-digit code of each city \tab  \cr
+   sociodemographic \tab P001 \tab Total number of residents \tab  \cr
+   sociodemographic \tab P002 \tab Number of white residents \tab  \cr
+   sociodemographic \tab P003 \tab Number of black residents \tab  \cr
+   sociodemographic \tab P004 \tab Number of indigenous residents \tab  \cr
+   sociodemographic \tab P005 \tab Number of asian-descendents residents \tab  \cr
+   sociodemographic \tab P006 \tab Number of men \tab  \cr
+   sociodemographic \tab P007 \tab Number of women \tab  \cr
+   sociodemographic \tab P010 \tab Number of people between 0 and 5 years old \tab  \cr
+   sociodemographic \tab P011 \tab Number of people between 6 and 14 years old \tab  \cr
+   sociodemographic \tab P012 \tab Number of people between 15 and 18 years old \tab  \cr
+   sociodemographic \tab P013 \tab Number of people between 19 and 24 years old \tab  \cr
+   sociodemographic \tab P014 \tab Number of people between 25 and 39 years old \tab  \cr
+   sociodemographic \tab P015 \tab Number of people between 40 and 69 years old \tab  \cr
+   sociodemographic \tab P016 \tab Number of people with 70 years old or more \tab  \cr
+   sociodemographic \tab R001 \tab Average household income per capita \tab R$ (Brazilian Reais), values in 2010 \cr
+   sociodemographic \tab R002 \tab Income quintile group \tab 1 (poorest), 2, 3, 4, 5 (richest) \cr
+   sociodemographic \tab R003 \tab Income decile group \tab 1 (poorest), 2, 3, 4, 5, 6, 7, 8, 9, 10 (richest) \cr
+}
+}
+
+\section{Cities available}{
+\tabular{ll}{
+   \strong{City name} \tab \strong{Three-letter abbreviation} \cr
+   Belem \tab \code{bel} \cr
+   Belo Horizonte \tab \code{bho} \cr
+   Brasilia \tab \code{bsb} \cr
+   Campinas \tab \code{cam} \cr
+   Campo Grande \tab \code{cgr} \cr
+   Curitiba \tab \code{cur} \cr
+   Duque de Caxias \tab \code{duq} \cr
+   Fortaleza \tab \code{for} \cr
+   Goiania \tab \code{goi} \cr
+   Guarulhos \tab \code{gua} \cr
+   Maceio \tab \code{mac} \cr
+   Manaus \tab \code{man} \cr
+   Natal \tab \code{nat} \cr
+   Porto Alegre \tab \code{poa} \cr
+   Recife \tab \code{rec} \cr
+   Rio de Janeiro \tab \code{rio} \cr
+   Salvador \tab \code{sal} \cr
+   Sao Goncalo \tab \code{sgo} \cr
+   Sao Luis \tab \code{slz} \cr
+   Sao Paulo \tab \code{spo} \cr
 }
 }
 
 \examples{
-\dontrun{ if (interactive()) {
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # a single city
 bho <- read_population(city = 'Belo Horizonte', year = 2010, showProgress = FALSE)
 bho <- read_population(city = 'bho', year = 2010, showProgress = FALSE)
 
 # all cities
 all <- read_population(city = 'all', year = 2010)
-}}
+\dontshow{\}) # examplesIf}
 }
 \concept{population data functions}

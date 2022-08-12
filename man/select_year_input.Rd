@@ -7,7 +7,7 @@
 select_year_input(temp_meta = temp_meta, year = NULL)
 }
 \arguments{
-\item{temp_meta}{A dataframe with the file_url addresses of aop datasets}
+\item{temp_meta}{A data.frame with the url addresses of aop datasets}
 
 \item{year}{Year of the dataset (passed from read_ function)}
 }
@@ -17,15 +17,4 @@ A \code{data.frame} object with metadata subsetted by 'year'
 \description{
 Subsets the metadata table by 'year'.
 }
-\seealso{
-Other support functions: 
-\code{\link{aop_merge}()},
-\code{\link{aop_spatial_join}()},
-\code{\link{check_connection}()},
-\code{\link{download_data}()},
-\code{\link{load_data}()},
-\code{\link{select_city_input}()},
-\code{\link{select_metadata}()},
-\code{\link{select_mode_input}()}
-}
-\concept{support functions}
+\keyword{internal}

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="date" content="2022-08-11" />
+
+<title>Data dictionary [EN]</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Data dictionary [EN]</h1>
+<h4 class="date">2022-08-11</h4>
+
+
+
+<div id="general-variables-population-land-use-transport" class="section level1">
+<h1>General variables (population, land use, transport)</h1>
+<table>
+<colgroup>
+<col width="30%" />
+<col width="22%" />
+<col width="32%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>data_type</th>
+<th>column</th>
+<th>description</th>
+<th>values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>temporal</td>
+<td>year</td>
+<td>Year of reference</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>geographic</td>
+<td>id_hex</td>
+<td>Unique id of hexagonal cell</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>geographic</td>
+<td>abbrev_muni</td>
+<td>Abbreviation of city name (3 letters)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>geographic</td>
+<td>name_muni</td>
+<td>City name</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>geographic</td>
+<td>code_muni</td>
+<td>7-digit code of each city</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>sociodemographic</td>
+<td>P001</td>
+<td>Total number of residents</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sociodemographic</td>
+<td>P002</td>
+<td>Number of white residents</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>sociodemographic</td>
+<td>P003</td>
+<td>Number of black residents</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sociodemographic</td>
+<td>P004</td>
+<td>Number of Indigenous residents</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>sociodemographic</td>
+<td>P005</td>
+<td>Number of asian-descendents residents</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sociodemographic</td>
+<td>P006</td>
+<td>Number of men</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>sociodemographic</td>
+<td>P007</td>
+<td>Number of women</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sociodemographic</td>
+<td>P010</td>
+<td>Number of people between 0 and 5 years old</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>sociodemographic</td>
+<td>P011</td>
+<td>Number of people between 6 and 14 years old</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sociodemographic</td>
+<td>P012</td>
+<td>Number of people between 15 and 18 years old</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>sociodemographic</td>
+<td>P013</td>
+<td>Number of people between 19 and 24 years old</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sociodemographic</td>
+<td>P014</td>
+<td>Number of people between 25 and 39 years old</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>sociodemographic</td>
+<td>P015</td>
+<td>Number of people between 40 and 69 years old</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sociodemographic</td>
+<td>P016</td>
+<td>Number of people with 70 years old or more</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>sociodemographic</td>
+<td>R001</td>
+<td>Average household income per capita</td>
+<td>R$ (Brazilian Reais), values in 2010</td>
+</tr>
+<tr class="odd">
+<td>sociodemographic</td>
+<td>R002</td>
+<td>Income quintile group</td>
+<td>1 (poorest), 2, 3, 4, 5 (richest)</td>
+</tr>
+<tr class="even">
+<td>sociodemographic</td>
+<td>R003</td>
+<td>Income decile group</td>
+<td>1 (poorest), 2, 3, 4, 5, 6, 7, 8, 9, 10 (richest)</td>
+</tr>
+<tr class="odd">
+<td>land use</td>
+<td>T001</td>
+<td>Total number of formal jobs</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>land use</td>
+<td>T002</td>
+<td>Number of formal jobs with primary education</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>land use</td>
+<td>T003</td>
+<td>Number of formal jobs with secuodary education</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>land use</td>
+<td>T004</td>
+<td>Number of formal jobs with tertiary education</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>land use</td>
+<td>E001</td>
+<td>Total number of public schools</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>land use</td>
+<td>E002</td>
+<td>Number of public schools - early childhood</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>land use</td>
+<td>E003</td>
+<td>Number of public schools - elementary schools</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>land use</td>
+<td>E004</td>
+<td>Number of public schools - high schools</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>land use</td>
+<td>M001</td>
+<td>Total number of school enrollments</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>land use</td>
+<td>M002</td>
+<td>Number of school enrollments - early childhood</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>land use</td>
+<td>M003</td>
+<td>Number of school enrollments - elementary schools</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>land use</td>
+<td>M004</td>
+<td>Number of school enrollments - high schools</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>land use</td>
+<td>S001</td>
+<td>Total number of healthcare facilities</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>land use</td>
+<td>S002</td>
+<td>Number of healthcare facilities - low complexity</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>land use</td>
+<td>S003</td>
+<td>Number of healthcare facilities - medium complexity</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>land use</td>
+<td>S004</td>
+<td>Number of healthcare facilities - high complexity</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>land use</td>
+<td>C001</td>
+<td>Total number of Social Assistance Reference Centers (CRAS)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>transport</td>
+<td>mode</td>
+<td>Transport mode</td>
+<td>walk; bicycle; public_transport; car</td>
+</tr>
+<tr class="odd">
+<td>transport</td>
+<td>peak</td>
+<td>Peak and off-peak</td>
+<td>1 (peak); 0 (off-peak)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="accessibility-indicators" class="section level1">
+<h1>Accessibility indicators</h1>
+<div id="organization-of-the-columns-with-accessibility-estimates" class="section level4">
+<h4>Organization of the columns with accessibility estimates</h4>
+<p>The name of the columns with accessibility estimates are the junction
+of three components: 1) Type of accessibility indicator 2) Type of
+opportunity / population 3) Time threshold</p>
+</div>
+<div id="type-of-accessibility-indicator" class="section level3">
+<h3>1) Type of accessibility indicator</h3>
+<table>
+<colgroup>
+<col width="12%" />
+<col width="65%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Indicator</th>
+<th>Description</th>
+<th>Observation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CMA</td>
+<td>Cumulative opportunity measure (active)</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>CMP</td>
+<td>Cumulative opportunity measure (passive)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>TMI</td>
+<td>Travel time to closest opportunity</td>
+<td>Value = Inf when travel time is longer than 2h (public transport or
+car) or 1,5h (walking or bicycle)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="type-of-opportunity-population" class="section level3">
+<h3>2) Type of opportunity / population</h3>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="16%" />
+<col width="56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type of opportunity</th>
+<th>Description</th>
+<th>Observation: available in combination with</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>TT</td>
+<td>All jobs</td>
+<td>CMA indicator</td>
+</tr>
+<tr class="even">
+<td>TB</td>
+<td>Jobs with primary education</td>
+<td>CMA indicator</td>
+</tr>
+<tr class="odd">
+<td>TM</td>
+<td>Jobs with secuodary education</td>
+<td>CMA indicator</td>
+</tr>
+<tr class="even">
+<td>TA</td>
+<td>Jobs with tertiary education</td>
+<td>CMA indicator</td>
+</tr>
+<tr class="odd">
+<td>ST</td>
+<td>All healthcare facilities</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="even">
+<td>SB</td>
+<td>Healthcare facilities - Low complexity</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="odd">
+<td>SM</td>
+<td>Healthcare facilities - Medium complexity</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="even">
+<td>SA</td>
+<td>Healthcare facilities - High complexity</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="odd">
+<td>ET</td>
+<td>All public schools</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="even">
+<td>EI</td>
+<td>Public schools - early childhood</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="odd">
+<td>EF</td>
+<td>Public schools - elementary schools</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="even">
+<td>EM</td>
+<td>Public schools - high schools</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="odd">
+<td>MT</td>
+<td>All school enrollments</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="even">
+<td>MI</td>
+<td>School enrollments - early childhood</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="odd">
+<td>MF</td>
+<td>School enrollments - elementary schools</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="even">
+<td>MM</td>
+<td>School enrollments - high schools</td>
+<td>CMA and TMI indicators</td>
+</tr>
+<tr class="odd">
+<td>CT</td>
+<td>All Social Assistance Reference Centers (CRAS)</td>
+<td>CMA and TMI indicators</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="19%" />
+<col width="60%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>People</th>
+<th>Description</th>
+<th>Observation: available in combination with</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PT</td>
+<td>All population</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="even">
+<td>PH</td>
+<td>Men</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="odd">
+<td>PM</td>
+<td>Women</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="even">
+<td>PB</td>
+<td>White population</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="odd">
+<td>PA</td>
+<td>Asian-descendent population</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="even">
+<td>PI</td>
+<td>Indigenous population</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="odd">
+<td>PN</td>
+<td>Back population</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="even">
+<td>P0005I</td>
+<td>Population between 0 and 5 years old</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="odd">
+<td>P0614I</td>
+<td>Population between 6 and 14 years old</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="even">
+<td>P1518I</td>
+<td>Population between 15 and 18 years old</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="odd">
+<td>P1924I</td>
+<td>Population between 19 and 24 years old</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="even">
+<td>P2539I</td>
+<td>Population between 25 and 39 years old</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="odd">
+<td>P4069I</td>
+<td>Population between 40 and 69 years old</td>
+<td>CMP indicator</td>
+</tr>
+<tr class="even">
+<td>P70I</td>
+<td>Population with 70 years old or more</td>
+<td>CMP indicator</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="time-threshold-only-applicable-to-cma-and-cmp-estimates" class="section level3">
+<h3>3) Time threshold (only applicable to CMA and CMP estimates)</h3>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="24%" />
+<col width="49%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Time threshold</th>
+<th>Description</th>
+<th>Observation: only applicable to</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>15</td>
+<td>Opportunities accessible within 15 min.</td>
+<td>Active transport modes</td>
+</tr>
+<tr class="even">
+<td>30</td>
+<td>Opportunities accessible within 30 min.</td>
+<td>All transport modes</td>
+</tr>
+<tr class="odd">
+<td>45</td>
+<td>Opportunities accessible within 45 min.</td>
+<td>Active transport modes</td>
+</tr>
+<tr class="even">
+<td>60</td>
+<td>Opportunities accessible within 60 min.</td>
+<td>All transport modes</td>
+</tr>
+<tr class="odd">
+<td>90</td>
+<td>Opportunities accessible within 90 min.</td>
+<td>Public transport and car</td>
+</tr>
+<tr class="even">
+<td>120</td>
+<td>Opportunities accessible within 120 min.</td>
+<td>Public transport and car</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="examples" class="section level1">
+<h1>Examples</h1>
+<ul>
+<li><strong>CMAEF30</strong>: Number of elementary schools accessible
+within 30 minutes</li>
+<li><strong>TMISB</strong>: Travel time from to the closest healthcare
+facility with low complexity services</li>
+<li><strong>CMPPM60</strong>: Number of women who can access a given
+hexagon cell in under 60 minutes</li>
+</ul>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

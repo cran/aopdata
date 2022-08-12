@@ -1,11 +1,12 @@
 ## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = identical(tolower(Sys.getenv("NOT_CRAN")), "true"),
+  out.width = "100%"
 )
 
-
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval = TRUE--------------------------------------------
 # load libraries
 library(aopdata)
 library(sf)
@@ -13,7 +14,7 @@ library(ggplot2)
 library(data.table)
 library(units)
 
-## ---- message = TRUE----------------------------------------------------------
+## ---- message = FALSE, eval = TRUE--------------------------------------------
 
 df <- read_access(city='Curitiba',
                    mode='public_transport',
@@ -21,27 +22,54 @@ df <- read_access(city='Curitiba',
                    year=2019,
                    showProgress = FALSE)
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval = TRUE--------------------------------------------
 
 ggplot() +
   geom_boxplot(data=subset(df, !is.na(R003)),
-               aes(x = factor(R003), y=CMAET30, color=factor(R003))) +
+               aes(x = factor(R003), y=CMATT60/1000, color=factor(R003))) +
   scale_color_brewer(palette = 'RdBu') +
-  labs(title='Distribution of the proportion of jobs accessible', color="Income\ndecile",
-       subtitle='by public transport in less than 30 min. by income decile',
-       x='Income decile', y="Accessibility") +
+  labs(title='Distribution of the number of jobs accessible', color="Income\ndecile",
+       subtitle='by public transport in less than 60 min. by income decile',
+       x='Income decile', y="N. of jobs accessible\n(thousands)") +
   scale_x_discrete(labels=c("D1 Poorest", paste0('D', 2:9), "D10 Wealthiest")) +
-  scale_y_continuous(labels = scales::percent) +
   theme_minimal()
 
 
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval = TRUE--------------------------------------------
 
-avg_access_10p_wealthiest <- df[ R003==10, weighted.mean(x=CMATT60, w=P001)]
-avg_access_40p_poorest <- df[ R003<=4, weighted.mean(x=CMATT60, w=P001)]
+# average access of the wealthiest 10%
+avg_access_10p_wealthiest <- df[ R003==10, weighted.mean(x=CMATT60, w=P001, na.rm=T)]
+
+# average access of the poorest 40%
+avg_access_40p_poorest <- df[ R003<=4, weighted.mean(x=CMATT60, w=P001, na.rm=T)]
+
+# Palma ratio
 palma_ratio <- avg_access_10p_wealthiest / avg_access_40p_poorest                
+palma_ratio 
 
-print( paste0('In less than 60 min. by public transport, the 10% wealthiest population could access on average ', round(palma_ratio,2), ' times more job opportunites than the 40% poorest people') )
+
+## ---- message = FALSE, eval = TRUE--------------------------------------------
+message( paste0('In less than 60 min. by public transport, the 10% wealthiest population could access on average ', round(palma_ratio,1), ' times more job opportunites than the 40% poorest people') )
+
+## ---- message = FALSE, eval = TRUE--------------------------------------------
+
+# replace Inf travel time with 120
+df[, TMISA := fifelse(TMISA==Inf, 120, TMISA)]
+
+# calculate avarage travel time by race
+df[, .(average = weighted.mean(x=TMISA, w=P001, na.rm=T),
+       white   = weighted.mean(x=TMISA, w=P002, na.rm=T),
+       black   = weighted.mean(x=TMISA, w=P003, na.rm=T))]
+
+# calculate avarage travel time by income
+temp <- df[, .(average = weighted.mean(x=TMISA, w=P001, na.rm=T)), by=R003]
+temp <- na.omit(temp)
+
+ggplot() + 
+  geom_point(data=temp, aes(y=average, x=factor(R003))) +
+  labs(x='Income decile', y='Avg. travel time to\nclosest hospital') +
+  theme_minimal()
+
 
 

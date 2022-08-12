@@ -4,41 +4,66 @@
 \alias{read_grid}
 \title{Download spatial hexagonal grid H3}
 \usage{
-read_grid(city, showProgress = FALSE)
+read_grid(city = NULL, showProgress = FALSE)
 }
 \arguments{
 \item{city}{Character. A city name or three-letter abbreviation. If
-\code{city="all"}, results for all cities are loaded.}
+\code{city="all"}, the function returns data for all cities.}
 
-\item{showProgress}{Logical. Defaults to \code{TRUE} display progress bar}
+\item{showProgress}{Logical. Defaults to \code{TRUE} display progress bar.}
 }
 \value{
 An \verb{sf data.frame} object
 }
 \description{
-Results of the AOP project are spatially aggregated on a hexagonal grid based
-on the global H3 index at resolution 9, with a size of 357 meters (short
-diagonal) and an area of 0.74 km2. More information about H3 at
-\url{https://h3geo.org/docs/core-library/restable/}.  See documentation
-'Details' for the data dictionary.
+Results of the AOP project are spatially aggregated on a H3 spatial grid at
+resolution 9, with a side of 174 meters and an area of 0.10 km2. More
+information about H3 at \url{https://h3geo.org/docs/core-library/restable/}.
+See the documentation 'Details' for the data dictionary.
 }
 \section{Data dictionary:}{
 \tabular{lll}{
    \strong{Data type} \tab \strong{column} \tab \strong{Description} \cr
+   geographic \tab \code{id_hex} \tab Unique id of hexagonal cell \cr
    geographic \tab \code{abbrev_muni} \tab Abbreviation of city name (3 letters) \cr
    geographic \tab \code{name_muni} \tab City name \cr
    geographic \tab \code{code_muni} \tab 7-digit code of each city \cr
-   geographic \tab \code{id_hex} \tab Unique id of hexagonal cell \cr
+}
+}
+
+\section{Cities available}{
+\tabular{ll}{
+   \strong{City name} \tab \strong{Three-letter abbreviation} \cr
+   Belem \tab \code{bel} \cr
+   Belo Horizonte \tab \code{bho} \cr
+   Brasilia \tab \code{bsb} \cr
+   Campinas \tab \code{cam} \cr
+   Campo Grande \tab \code{cgr} \cr
+   Curitiba \tab \code{cur} \cr
+   Duque de Caxias \tab \code{duq} \cr
+   Fortaleza \tab \code{for} \cr
+   Goiania \tab \code{goi} \cr
+   Guarulhos \tab \code{gua} \cr
+   Maceio \tab \code{mac} \cr
+   Manaus \tab \code{man} \cr
+   Natal \tab \code{nat} \cr
+   Porto Alegre \tab \code{poa} \cr
+   Recife \tab \code{rec} \cr
+   Rio de Janeiro \tab \code{rio} \cr
+   Salvador \tab \code{sal} \cr
+   Sao Goncalo \tab \code{sgo} \cr
+   Sao Luis \tab \code{slz} \cr
+   Sao Paulo \tab \code{spo} \cr
 }
 }
 
 \examples{
-\dontrun{ if (interactive()) {
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Read spatial grid of a single city
 nat <- read_grid(city = 'Natal', showProgress = FALSE)
 
 # Read spatial grid of all cities in the project
 # all <- read_grid(city = 'all', showProgress = FALSE)
-}}
+\dontshow{\}) # examplesIf}
 }
 \concept{spatial data functions}

@@ -1,26 +1,28 @@
 ## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = identical(tolower(Sys.getenv("NOT_CRAN")), "true"),
+  out.width = "100%"
 )
 
-
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval = TRUE--------------------------------------------
 library(aopdata)
 library(sf)
 library(ggplot2)
 library(data.table)
+library(scales)
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval = TRUE--------------------------------------------
 # download aop data
 df <- aopdata::read_access(city='Curitiba',
                        mode='public_transport',
                       year=2019,
-                      peak = F,
-                      geometry = T,
-                      showProgress = F)
+                      peak = FALSE,
+                      geometry = TRUE,
+                      showProgress = FALSE)
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval = TRUE--------------------------------------------
 ggplot() +
   geom_sf(data=df, aes(fill=CMATT60), color=NA, alpha=.9) +
   scale_fill_viridis_c(option = "inferno", labels=scales::percent) +
@@ -30,12 +32,12 @@ ggplot() +
 
 
 
-## ---- message = FALSE, eval=FALSE---------------------------------------------
-#  ggplot() +
-#    geom_sf(data=df, aes(fill=CMAET30), color=NA, alpha=.7) +
-#    scale_fill_viridis_c(option = "inferno", labels=scales::percent) +
-#      labs(title='Proportion of schools accessible', fill="Accessibility",
-#         subtitle='by public transport in less than 30 min.', fill="N. of schools") +
-#    theme_void()
-#  
+## ---- message = FALSE, eval = TRUE--------------------------------------------
+ggplot() +
+  geom_sf(data=df, aes(fill=CMAET30), color=NA, alpha=.7) +
+  scale_fill_viridis_c(option = "inferno", labels=scales::percent) +
+    labs(title='Proportion of schools accessible', fill="Accessibility",
+       subtitle='by public transport in less than 30 min.', fill="N. of schools") +
+  theme_void()
+
 

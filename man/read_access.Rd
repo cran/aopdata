@@ -5,7 +5,7 @@
 \title{Download accessibility estimates with population and land use data}
 \usage{
 read_access(
-  city,
+  city = NULL,
   mode = "walk",
   peak = TRUE,
   year = 2019,
@@ -15,7 +15,7 @@ read_access(
 }
 \arguments{
 \item{city}{Character. A city name or three-letter abbreviation. If
-\code{city="all"}, results for all cities are loaded.}
+\code{city="all"}, the function returns data for all cities.}
 
 \item{mode}{Character. A transport mode. Modes available include
 'public_transport', 'bicycle', or 'walk' (the default).}
@@ -23,79 +23,136 @@ read_access(
 \item{peak}{Logical. If \code{TRUE} (the default), returns accessibility estimates
 during peak time, between 6am and 8am. If \code{FALSE}, returns
 accessibility during off-peak, between 2pm and 4am. This argument
-only takes effect when \code{mode = public_transport}.}
+only takes effect when \code{mode} is either \code{car} or \code{public_transport}.}
 
-\item{year}{Numeric. A year number in YYYY format. Default set to 2019, the
-only year currently available.}
+\item{year}{Numeric. A year number in YYYY format. Defaults to 2019.}
 
 \item{geometry}{Logical. If \code{FALSE} (the default), returns a regular data.table
-of aop data. If \code{TRUE}, returns a an \verb{sf data.frame} with simple
+of aop data. If \code{TRUE}, returns an \verb{sf data.frame} with simple
 feature geometry of spatial hexagonal grid H3. See details in
 \link{read_grid}.}
 
-\item{showProgress}{Logical. Defaults to \code{TRUE} display progress bar}
+\item{showProgress}{Logical. Defaults to \code{TRUE} display progress bar.}
 }
 \value{
 A \code{data.frame} object
 }
 \description{
-Download annual estimates of access to employment, health and education
-services by transport mode and time of the day. See documentation 'Details'
-for the data dictionary. The data comes aggregated on a hexagonal grid based
-on the global H3 index at resolution 9, with a size of 357 meters (short
-diagonal) and an area of 0.74 km2. More information about H3 at
-\url{https://h3geo.org/docs/core-library/restable/}.
+Download estimates of access to employment, health, education and social
+assistance services by transport mode and time of the day for the cities
+included in the AOP project. See the documentation 'Details' for the data
+dictionary. The data set reports information for each heaxgon in a H3 spatial
+grid at resolution 9, with a side of 174 meters and an area of 0.10 km2. More
+information about H3 at \url{https://h3geo.org/docs/core-library/restable/}.
 }
 \section{Data dictionary:}{
-The name of the columns with accessibility estimates are the
-junction of three components: 1) Indicator 2) Type of opportunity
-3) Time thresold (if applicable)
-\subsection{1) Indicator}{\tabular{lll}{
-   \strong{Indicator} \tab \strong{Description} \tab \strong{Note} \cr
-   \code{CMA} \tab Cumulative opportunity measure (active) \tab  \cr
-   \code{TMI} \tab Travel time to closest opportunity \tab Value = Inf when travel time is longer than 2h (public transport) or 1,5h (walking or bicycle) \cr
+\tabular{llll}{
+   \strong{data_type} \tab \strong{column} \tab \strong{description} \tab \strong{values} \cr
+   temporal \tab year \tab Year of reference \tab  \cr
+   transport \tab mode \tab Transport mode \tab walk; bicycle; public_transport; car \cr
+   transport \tab peak \tab Peak and off-peak \tab 1 (peak); 0 (off-peak) \cr
+}
+
+
+The name of the columns with accessibility estimates are the junction of
+three components: 1) Type of accessibility indicator 2) Type of opportunity /
+population 3) Time threshold
+\subsection{1) Type of accessibility indicator}{\tabular{lll}{
+   \strong{Indicator} \tab \strong{Description} \tab \strong{Observation} \cr
+   CMA \tab Cumulative opportunity measure (active) \tab  \cr
+   CMP \tab Cumulative opportunity measure (passive) \tab  \cr
+   TMI \tab Travel time to closest opportunity \tab Value = Inf when travel time is longer than 2h (public transport or car) or 1,5h (walking or bicycle) \cr
 }
 
 }
 
-\subsection{2) Type of opportunity}{\tabular{lll}{
-   \strong{Indicator} \tab \strong{Description} \tab \strong{Note} \cr
-   \code{TT} \tab All jobs \tab  \cr
-   \code{TQ} \tab Total jobs with partial match between job education and income quintile \tab  \cr
-   \code{TD} \tab Total jobs with partial match between job education and income decile \tab  \cr
-   \code{ST} \tab All healthcare facilities \tab  \cr
-   \code{SB} \tab Healthcare facilities - Low complexity \tab  \cr
-   \code{SM} \tab Healthcare facilities - Medium complexity \tab  \cr
-   \code{SA} \tab Healthcare facilities - High complexity \tab  \cr
-   \code{ET} \tab All public schools \tab  \cr
-   \code{EI} \tab Public schools - early childhood \tab  \cr
-   \code{EF} \tab Public schools - elementary schools \tab  \cr
-   \code{EM} \tab Public schools - high schools \tab  \cr
+\subsection{2) Type of opportunity / population}{\tabular{lll}{
+   \strong{Type of opportunity} \tab \strong{Description} \tab \strong{Observation: available in combination with} \cr
+   TT \tab All jobs \tab CMA indicator \cr
+   TB \tab Jobs with primary education \tab CMA indicator \cr
+   TM \tab Jobs with secondary education \tab CMA indicator \cr
+   TA \tab Jobs with tertiary education \tab CMA indicator \cr
+   ST \tab All healthcare facilities \tab CMA and TMI indicators \cr
+   SB \tab Healthcare facilities - Low complexity \tab CMA and TMI indicators \cr
+   SM \tab Healthcare facilities - Medium complexity \tab CMA and TMI indicators \cr
+   SA \tab Healthcare facilities - High complexity \tab CMA and TMI indicators \cr
+   ET \tab All public schools \tab CMA and TMI indicators \cr
+   EI \tab Public schools - early childhood \tab CMA and TMI indicators \cr
+   EF \tab Public schools - elementary schools \tab CMA and TMI indicators \cr
+   EM \tab Public schools - high schools \tab CMA and TMI indicators \cr
+   MT \tab All school enrollments \tab CMA and TMI indicators \cr
+   MI \tab School enrollments - early childhood \tab CMA and TMI indicators \cr
+   MF \tab School enrollments - elementary schools \tab CMA and TMI indicators \cr
+   MM \tab School enrollments - high schools \tab CMA and TMI indicators \cr
+   CT \tab All Social Assistance Reference Centers (CRAS) \tab CMA and TMI indicators \cr
+}
+\tabular{lll}{
+   \strong{People} \tab \strong{Description} \tab \strong{Observation: available in combination with} \cr
+   PT \tab All population \tab CMP indicator \cr
+   PH \tab Men \tab CMP indicator \cr
+   PM \tab Women \tab CMP indicator \cr
+   PB \tab White population \tab CMP indicator \cr
+   PA \tab Asian-descendent population \tab CMP indicator \cr
+   PI \tab Indigenous population \tab CMP indicator \cr
+   PN \tab Back population \tab CMP indicator \cr
+   P0005I \tab Population between 0 and 5 years old \tab CMP indicator \cr
+   P0614I \tab Population between 6 and 14 years old \tab CMP indicator \cr
+   P1518I \tab Population between 15 and 18 years old \tab CMP indicator \cr
+   P1924I \tab Population between 19 and 24 years old \tab CMP indicator \cr
+   P2539I \tab Population between 25 and 39 years old \tab CMP indicator \cr
+   P4069I \tab Population between 40 and 69 years old \tab CMP indicator \cr
+   P70I \tab Population with 70 years old or more \tab CMP indicator \cr
 }
 
 }
 
-\subsection{3) Time thresold (only applicable to CMA estimates)y}{\tabular{lll}{
-   \strong{Time thresold} \tab \strong{Description} \tab \strong{Note - Only applicable to:} \cr
-   \code{15} \tab Opportunities accessible within 15 min. \tab Active transport modes \cr
-   \code{30} \tab Opportunities accessible within 30 min. \tab All transport modes \cr
-   \code{45} \tab Opportunities accessible within 45 min. \tab Active transport modes \cr
-   \code{60} \tab Opportunities accessible within 60 min. \tab All transport modes \cr
-   \code{90} \tab Opportunities accessible within 90 min. \tab Public transport \cr
-   \code{120} \tab Opportunities accessible within 120 min. \tab Public transport \cr
+\subsection{3) Time threshold (only applicable to CMA and CMP estimates)}{\tabular{lll}{
+   \strong{Time threshold} \tab **Description	** \tab \strong{Observation: only applicable to} \cr
+   15 \tab Opportunities accessible within 15 min. \tab Active transport modes \cr
+   30 \tab Opportunities accessible within 30 min. \tab All transport modes \cr
+   45 \tab Opportunities accessible within 45 min. \tab Active transport modes \cr
+   60 \tab Opportunities accessible within 60 min. \tab All transport modes \cr
+   90 \tab Opportunities accessible within 90 min. \tab Public transport and car \cr
+   120 \tab Opportunities accessible within 120 min. \tab Public transport and car \cr
+}
+
+}
+
+\subsection{4) Cities available}{\tabular{lll}{
+   \strong{City name} \tab \strong{Three-letter abbreviation} \tab \strong{Transport modes} \cr
+   Belem \tab \code{bel} \tab Active \cr
+   Belo Horizonte \tab \code{bho} \tab All \cr
+   Brasilia \tab \code{bsb} \tab Active \cr
+   Campinas \tab \code{cam} \tab All \cr
+   Campo Grande \tab \code{cgr} \tab Active \cr
+   Curitiba \tab \code{cur} \tab Active \cr
+   Duque de Caxias \tab \code{duq} \tab Active \cr
+   Fortaleza \tab \code{for} \tab All \cr
+   Goiania \tab \code{goi} \tab All \cr
+   Guarulhos \tab \code{gua} \tab Active \cr
+   Maceio \tab \code{mac} \tab Active \cr
+   Manaus \tab \code{man} \tab Active \cr
+   Natal \tab \code{nat} \tab Active \cr
+   Porto Alegre \tab \code{poa} \tab All \cr
+   Recife \tab \code{rec} \tab All \cr
+   Rio de Janeiro \tab \code{rio} \tab All \cr
+   Salvador \tab \code{sal} \tab Active \cr
+   Sao Goncalo \tab \code{sgo} \tab Active \cr
+   Sao Luis \tab \code{slz} \tab Active \cr
+   Sao Paulo \tab \code{spo} \tab All \cr
 }
 
 }
 }
 
 \examples{
-\dontrun{ if (interactive()) {
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Read accessibility estimates of a single city
 df <- read_access(city = 'Fortaleza', mode = 'public_transport', year = 2019, showProgress = FALSE)
-df <- read_access(city = 'for', mode = 'public_transport', year = 2019, showProgress = FALSE)
+df <- read_access(city = 'Goiania', mode = 'public_transport', year = 2019, showProgress = FALSE)
 
 # Read accessibility estimates for all cities
 all <- read_access(city = 'all', mode = 'walk', year = 2019, showProgress = FALSE)
-}}
+\dontshow{\}) # examplesIf}
 }
 \concept{accessibility data functions}

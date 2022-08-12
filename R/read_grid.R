@@ -1,54 +1,84 @@
 #' Download spatial hexagonal grid H3
 #'
 #' @description
-#' Results of the AOP project are spatially aggregated on a hexagonal grid based
-#' on the global H3 index at resolution 9, with a size of 357 meters (short
-#' diagonal) and an area of 0.74 km2. More information about H3 at
-#' \url{https://h3geo.org/docs/core-library/restable/}.  See documentation
-#' 'Details' for the data dictionary.
+#' Results of the AOP project are spatially aggregated on a H3 spatial grid at
+#' resolution 9, with a side of 174 meters and an area of 0.10 km2. More
+#' information about H3 at \url{https://h3geo.org/docs/core-library/restable/}.
+#' See the documentation 'Details' for the data dictionary.
 #'
-#' @param city Character. A city name or three-letter abbreviation. If
-#'             `city="all"`, results for all cities are loaded.
-#' @param showProgress Logical. Defaults to `TRUE` display progress bar
+#' @template city
+#' @template showProgress
 #'
 #' @return An `sf data.frame` object
 #' @details
 #' # Data dictionary:
 #' |**Data type**|**column**|**Description**|
 #' |-----|-----|-----|
+#' | geographic	| `id_hex`	   | Unique id of hexagonal cell	|
 #' | geographic	| `abbrev_muni`| Abbreviation of city name (3 letters)	|
 #' | geographic	| `name_muni`  | City name	|
 #' | geographic	| `code_muni`	 | 7-digit code of each city	| |
-#' | geographic	| `id_hex`	   | Unique id of hexagonal cell	|
+#'
+#' # Cities available
+#' |**City name**| **Three-letter abbreviation**|
+#' |-----|-----|
+#' | Belem | `bel` |
+#' | Belo Horizonte | `bho` |
+#' | Brasilia  | `bsb`|
+#' | Campinas  | `cam` |
+#' | Campo Grande | `cgr` |
+#' | Curitiba | `cur`|
+#' | Duque de Caxias | `duq` |
+#' | Fortaleza | `for`|
+#' | Goiania  | `goi` |
+#' | Guarulhos  | `gua`|
+#' | Maceio  | `mac`|
+#' | Manaus  | `man`|
+#' | Natal  | `nat`|
+#' | Porto Alegre | `poa`|
+#' | Recife | `rec` |
+#' | Rio de Janeiro  | `rio`|
+#' | Salvador  | `sal`|
+#' | Sao Goncalo  | `sgo`|
+#' | Sao Luis  | `slz`|
+#' | Sao Paulo  | `spo`|
 #'
 #' @export
 #' @family spatial data functions
-#' @examples \dontrun{ if (interactive()) {
+#' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' # Read spatial grid of a single city
 #' nat <- read_grid(city = 'Natal', showProgress = FALSE)
 #'
 #' # Read spatial grid of all cities in the project
 #' # all <- read_grid(city = 'all', showProgress = FALSE)
-#'}}
-read_grid <- function(city, showProgress = FALSE){
+#'
+
+read_grid <- function(city=NULL, showProgress = FALSE){
 
   # checks
-  if(! is.logical(showProgress) ){stop("The 'showProgress' argument must either be TRUE or FALSE")}
+  checkmate::assert_logical(showProgress)
 
   # Get metadata with data url addresses
   temp_meta <- select_metadata(t="grid", c=city)
 
   # check if download failed
-  if (is.null(temp_meta)) { return(invisible(NULL)) }
+  if (is.null(temp_meta)) { return(invisible(NULL)) } # nocov
 
   # list paths of files to download
   file_url <- as.character(temp_meta$download_path)
+  file_url2 <- as.character(temp_meta$download_path2)
 
   # download files
   aop_sf <- download_data(file_url, progress_bar = showProgress)
 
-  # check if download failed
-  if (is.null(aop_sf)) { return(invisible(NULL)) }
+  # if download from github fails, try downloading data from ipea
+  if (is.null(aop_sf)) {
+    aop_sf <- download_data(file_url2, progress_bar = showProgress)
+
+    # check if download failed
+    if (is.null(aop_sf)) { return(invisible(NULL)) } # nocov
+  }
+
 
   return(aop_sf)
 }

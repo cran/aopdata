@@ -12,20 +12,9 @@ aop_spatial_join(aop_df, aop_sf)
 \item{aop_sf}{A spatial \code{sf} of aop data}
 }
 \value{
-Returns a \verb{data.frame sf} with access/landuse data and grid geometries
+Returns a \verb{data.frame sf} with access/land use data and grid geometries
 }
 \description{
-Merges landuse or access data with H3 grid geometries
+Merges land use or access data with H3 grid geometries
 }
-\seealso{
-Other support functions: 
-\code{\link{aop_merge}()},
-\code{\link{check_connection}()},
-\code{\link{download_data}()},
-\code{\link{load_data}()},
-\code{\link{select_city_input}()},
-\code{\link{select_metadata}()},
-\code{\link{select_mode_input}()},
-\code{\link{select_year_input}()}
-}
-\concept{support functions}
+\keyword{internal}

@@ -8,11 +8,11 @@ knitr::opts_chunk$set(
 
 ## ---- message = FALSE, eval = FALSE-------------------------------------------
 #  # CRAN
-#  install.packages('aopdata')
+#  install.packages("aopdata")
 #  
-#  # github
-#    utils::remove.packages('aopdata')
-#    devtools::install_github("ipeaGIT/aopdata", subdir = "r-package")
+#  # dev version from github
+#  utils::remove.packages('aopdata')
+#  devtools::install_github("ipeaGIT/aopdata", subdir = "r-package")
 #  
 
 ## ---- message = FALSE, eval = TRUE--------------------------------------------
@@ -32,7 +32,8 @@ cur <- read_access(
           city = 'Curitiba', 
           mode = 'public_transport', 
           peak = TRUE,
-          year = 2019
+          year = 2019,
+          showProgress = FALSE
           )
 
 ## ---- message = FALSE, eval = TRUE--------------------------------------------

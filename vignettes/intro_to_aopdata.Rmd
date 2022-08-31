@@ -33,11 +33,11 @@ You can install `aopdata` from CRAN, or the development version from GitHub.
 
 ```{r, message = FALSE, eval = FALSE}
 # CRAN
-install.packages('aopdata')
+install.packages("aopdata")
 
-# github
-  utils::remove.packages('aopdata')
-  devtools::install_github("ipeaGIT/aopdata", subdir = "r-package")
+# dev version from github
+utils::remove.packages('aopdata')
+devtools::install_github("ipeaGIT/aopdata", subdir = "r-package")
 
 ```
 
@@ -88,7 +88,8 @@ cur <- read_access(
           city = 'Curitiba', 
           mode = 'public_transport', 
           peak = TRUE,
-          year = 2019
+          year = 2019,
+          showProgress = FALSE
           )
 ```
 

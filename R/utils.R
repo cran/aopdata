@@ -96,19 +96,15 @@ select_year_input <- function(temp_meta=temp_meta, year=NULL){
 #'
 select_mode_input <- function(temp_meta=temp_meta, mode=NULL){
 
-  checkmate::assert_string(mode)
+  checkmate::assert_string(mode, null.ok = FALSE)
 
-  # NULL
-  if (is.null(mode)){  stop(paste0("Error: This 'mode' is not available for this 'city' & 'year.' It must be one of the following: ",
-                                paste(unique(temp_meta$mode),collapse = " "))) }
-
-  # invalid input
-  else if (mode %in% temp_meta$mode){ message(paste0("Using mode ", mode))
+  # Valid input
+  if (mode %in% temp_meta$mode) { message(paste0("Using mode ", mode))
     temp_meta <- temp_meta[ temp_meta$mode %in% mode, ]
     return(temp_meta) }
 
   # invalid input
-  else { stop(paste0("Error: This 'mode' is not available for this 'city' & 'year.' It must be one of the following: ",
+  else { stop(paste0("Error: This 'mode' is not available for this 'city' & 'year'. Please try another 'year' or one of the following modes: ",
                      paste(unique(temp_meta$mode), collapse = " ")))
   }
 }
@@ -175,9 +171,13 @@ download_data <- function(url, progress_bar = showProgress){
 
   if( !(progress_bar %in% c(T, F)) ){ stop("Value to argument 'showProgress' has to be either TRUE or FALSE") }
 
+  # get backup links
+  filenames <- basename(url)
+  url2 <- paste0('https://github.com/ipeaGIT/aopdata/releases/download/v1.0.0/', filenames)
+
   ## one single file
 
-  if (length(url)==1 & progress_bar == TRUE) {
+  if (length(url)==1) {
 
     # location of temp_file
     temps <- paste0(tempdir(),"/", unlist(lapply(strsplit(url,"/"),tail,n=1L)))
@@ -185,34 +185,20 @@ download_data <- function(url, progress_bar = showProgress){
     # check if file has not been downloaded already. If not, download it
     if (!file.exists(temps) | file.info(temps)$size == 0) {
 
-      # test server connection
-      check_con <- check_connection(url[1])
-      if(is.null(check_con) | isFALSE(check_con)){ return(invisible(NULL)) }
+      # test connection with server1
+      check_con <- check_connection(url[1], silent = TRUE)
+      if (is.null(check_con) | isFALSE(check_con)) {
+
+        # if server1 fails, replace url and test connection with server2
+        url <- url2
+        check_con <- check_connection(url[1])
+        if(is.null(check_con) | isFALSE(check_con)){ return(invisible(NULL)) }
+        }
 
       # download data
-      httr::GET(url=url, httr::progress(), httr::write_disk(temps, overwrite = T))
-    }
-
-
-    # load gpkg to memory
-    temp_sf <- load_data(url, temps)
-    return(temp_sf)
-  }
-
-  else if (length(url)==1 & progress_bar == FALSE) {
-
-    # location of temp_file
-    temps <- paste0(tempdir(),"/", unlist(lapply(strsplit(url,"/"),tail,n=1L)))
-
-    # check if file has not been downloaded already. If not, download it
-    if (!file.exists(temps) | file.info(temps)$size == 0) {
-
-      # test server connection
-      check_con <- check_connection(url[1])
-      if(is.null(check_con) | isFALSE(check_con)){ return(invisible(NULL)) }
-
-      # download data
-      httr::GET(url=url, httr::write_disk(temps, overwrite = T))
+      httr::GET(url=url,
+                if(isTRUE(progress_bar)){httr::progress()},
+                httr::write_disk(temps, overwrite = T))
     }
 
     # load gpkg to memory
@@ -224,15 +210,23 @@ download_data <- function(url, progress_bar = showProgress){
 
   ## multiple files
 
-  else if (length(url) > 1 & progress_bar == TRUE) {
+  else if (length(url) > 1) {
 
     # input for progress bar
     total <- length(url)
-    pb <- utils::txtProgressBar(min = 0, max = total, style = 3)
+    if(isTRUE(progress_bar)){
+      pb <- utils::txtProgressBar(min = 0, max = total, style = 3)
+    }
 
-    # test server connection
+    # test connection with server1
     check_con <- check_connection(url[1])
-    if(is.null(check_con) | isFALSE(check_con)){ return(invisible(NULL)) }
+    if (is.null(check_con) | isFALSE(check_con)) {
+
+      # if server1 fails, replace url and test connection with server2
+      url <- url2
+      check_con <- check_connection(url[1])
+      if(is.null(check_con) | isFALSE(check_con)){ return(invisible(NULL)) }
+    }
 
     # download files
     lapply(X=url, function(x){
@@ -245,12 +239,12 @@ download_data <- function(url, progress_bar = showProgress){
         i <- match(c(x),url)
         httr::GET(url=x, #httr::progress(),
                   httr::write_disk(temps, overwrite = T))
-        utils::setTxtProgressBar(pb, i)
+        if(isTRUE(progress_bar)){ utils::setTxtProgressBar(pb, i) }
       }
     })
 
     # closing progress bar
-    close(pb)
+    if(isTRUE(progress_bar)){close(pb)}
 
     # load gpkg
     temp_sf <- load_data(url)
@@ -259,32 +253,6 @@ download_data <- function(url, progress_bar = showProgress){
 
   }
 
-  else if(length(url) > 1 & progress_bar == FALSE) {
-
-    # test server connection
-    check_con <- check_connection(url[1])
-    if(is.null(check_con) | isFALSE(check_con)){ return(invisible(NULL)) }
-
-    # download files
-    lapply(X=url, function(x){
-
-      # location of temp_file
-      temps <- paste0(tempdir(),"/", unlist(lapply(strsplit(x,"/"),tail,n=1L)))
-
-      # check if file has not been downloaded already. If not, download it
-      if (!file.exists(temps) | file.info(temps)$size == 0) {
-        i <- match(c(x),url)
-        httr::GET(url=x, #httr::progress(),
-                  httr::write_disk(temps, overwrite = T))
-      }
-    })
-
-
-    # load gpkg
-    temp_sf <- load_data(url)
-    return(temp_sf)
-
-  }
 }
 
 

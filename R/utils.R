@@ -169,7 +169,10 @@ select_metadata <- function(t=NULL, c=NULL, y=NULL, m=NULL){
 #'
 download_data <- function(url, progress_bar = showProgress){
 
-  if( !(progress_bar %in% c(T, F)) ){ stop("Value to argument 'showProgress' has to be either TRUE or FALSE") }
+  # check showProgress input
+  if (!(progress_bar %in% c(TRUE, FALSE))) {
+    stop("Value to argument 'showProgress' has to be either TRUE or FALSE")
+    }
 
   # get backup links
   filenames <- basename(url)
@@ -182,28 +185,35 @@ download_data <- function(url, progress_bar = showProgress){
     # location of temp_file
     temps <- paste0(tempdir(),"/", unlist(lapply(strsplit(url,"/"),tail,n=1L)))
 
-    # check if file has not been downloaded already. If not, download it
+    # if file has not been downloaded already. If not, download it
     if (!file.exists(temps) | file.info(temps)$size == 0) {
 
       # test connection with server1
-      check_con <- check_connection(url[1], silent = TRUE)
+      try( silent = TRUE, check_con <- check_connection(url[1], silent = TRUE))
       if (is.null(check_con) | isFALSE(check_con)) {
 
         # if server1 fails, replace url and test connection with server2
         url <- url2
-        check_con <- check_connection(url[1], silent = FALSE)
+        try( silent = TRUE, check_con <- check_connection(url[1], silent = FALSE))
         if(is.null(check_con) | isFALSE(check_con)){ return(invisible(NULL)) }
         }
 
+      ###
       # download data
-      httr::GET(url=url,
+      try( silent = TRUE,
+           httr::GET(url=url,
+               # httr::timeout(10), ### 666 add time out to every httr::GET
                 if(isTRUE(progress_bar)){httr::progress()},
                 httr::write_disk(temps, overwrite = T))
+           )
     }
 
+    # if anything fails, return NULL
+    if (any(!file.exists(temps) | file.info(temps)$size == 0)) { return(invisible(NULL)) }
+
     # load gpkg to memory
-    temp_sf <- load_data(url, temps)
-    return(temp_sf)
+    temp_data <- load_data(temps)
+    return(temp_data)
   }
 
 
@@ -219,13 +229,13 @@ download_data <- function(url, progress_bar = showProgress){
     }
 
     # test connection with server1
-    check_con <- check_connection(url[1], silent = TRUE)
+    try( silent = TRUE, check_con <- check_connection(url[1], silent = TRUE))
     if (is.null(check_con) | isFALSE(check_con)) {
 
       # if server1 fails, replace url and test connection with server2
       url <- url2
-      check_con <- check_connection(url[1], silent = FALSE)
-      if(is.null(check_con) | isFALSE(check_con)){ return(invisible(NULL)) }
+      try( silent = TRUE, check_con <- check_connection(url[1], silent = FALSE))
+      if (is.null(check_con) | isFALSE(check_con)) { return(invisible(NULL)) }
     }
 
     # download files
@@ -237,8 +247,11 @@ download_data <- function(url, progress_bar = showProgress){
       # check if file has not been downloaded already. If not, download it
       if (!file.exists(temps) | file.info(temps)$size == 0) {
         i <- match(c(x),url)
-        httr::GET(url=x, #httr::progress(),
+        try( silent = TRUE,
+             httr::GET(url=x, #httr::progress(),
+                  # httr::timeout(10),
                   httr::write_disk(temps, overwrite = T))
+             )
         if(isTRUE(progress_bar)){ utils::setTxtProgressBar(pb, i) }
       }
     })
@@ -246,11 +259,13 @@ download_data <- function(url, progress_bar = showProgress){
     # closing progress bar
     if(isTRUE(progress_bar)){close(pb)}
 
-    # load gpkg
-    temp_sf <- load_data(url)
-    return(temp_sf)
+    # if anything fails, return NULL
+    temps <- paste0(tempdir(),"/", unlist(lapply(strsplit(url,"/"),tail,n=1L)))
+    if (any(!file.exists(temps) | file.info(temps)$size == 0)) { return(invisible(NULL)) }
 
-
+    # load data
+    temp_data <- load_data(temps)
+    return(temp_data)
   }
 
 }
@@ -261,51 +276,51 @@ download_data <- function(url, progress_bar = showProgress){
 #'
 #' @description Reads data from tempdir to global environment.
 #'
-#' @param url A string with the url address of aop dataset
 #' @param temps The address of a data file stored in tempdir. Defaults to NULL
 #'
 #' @return Returns either an `sf` or a `data.frame`, depending of the data set
 #'         that was downloaded
 #' @keywords internal
 #'
-load_data <- function(url, temps=NULL){
+load_data <- function(temps=NULL){
 
   # check if .csv or geopackage
-  if( url[1] %like% '.csv' ){ fformat<- 'csv'}
-  if( url[1] %like% '.gpkg' ){ fformat<- 'gpkg'}
+  if( temps[1] %like% '.csv' ){ fformat <- 'csv'}
+  if( temps[1] %like% '.gpkg' ){ fformat <- 'gpkg'}
 
   ### one single file
-  if (length(url)==1) {
+  if (length(temps)==1) {
 
     # read file
     if( fformat=='csv' ){ temp <- data.table::fread(temps) }
     if( fformat=='gpkg' ){ temp <- sf::st_read(temps, quiet=T) }
-    return(temp)
   }
 
-  else if (length(url) > 1) {
+  ### multiple files
+  else if (length(temps) > 1) {
 
-    # read files and pile them up
-    files <- unlist(lapply(strsplit(url,"/"), tail, n = 1L))
-    files <- paste0(tempdir(),"/",files)
-
-    # access csv
+    # csv
     if( fformat=='csv' ){
-      files <- lapply(X=files, FUN= data.table::fread)
+      files <- lapply(X=temps, FUN= data.table::fread)
       temp <- data.table::rbindlist(files, fill = TRUE)
     }
-
-    # grid geopackage
+    # geopackage
     if( fformat=='gpkg' ){
-      files <- lapply(X=files, FUN= sf::st_read, quiet=T)
+      files <- lapply(X=temps, FUN= sf::st_read, quiet=T)
       temp <- sf::st_as_sf(data.table::rbindlist(files, fill = TRUE))
     }
-
-    return(temp)
   }
 
+  # check if data was read Ok
+  if (nrow(temp)==0) {
+    message("A file must have been corrupted during download. Please restart your R session and download the data again.")
+    return(invisible(NULL))
+  }
+
+  return(temp)
+
   # load data to memory
-  temp_data <- load_data(url, temps)
+  temp_data <- load_data(temps)
   return(temp_data)
 }
 
@@ -399,7 +414,8 @@ check_connection <- function(url = 'https://www.ipea.gov.br/geobr/aopdata/metada
 
   # test server connection
   x <- try(silent = TRUE,
-           httr::GET(url, # timeout(5),
+           httr::GET(url,
+                    # httr::timeout(10),
                      config = httr::config(ssl_verifypeer = FALSE)))
   # link offline
   if (methods::is(x)=="try-error") {

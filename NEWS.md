@@ -1,8 +1,16 @@
+# aopdata v1.0.3
+
+**Bug fixes**
+
+- Simplified internal functions
+- Download functions should now fail gracefully with an informative message when there are internet connection problems. Using a more robust solution now that also accounts for timeout.
+
+
 # aopdata v1.0.2
 
 **Bug fixes**
 
-- Fixed bug that printed message 'connection fail' in the 1st attenmpt, when it should only print in the 2nd attempt
+- Fixed bug that printed message 'connection fail' in the 1st attempt, when it should only print in the 2nd attempt
 - updated CITATION file with bibentry()
 
 

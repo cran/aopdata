@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 # load libraries
 library(aopdata)
 library(data.table)
@@ -15,7 +15,7 @@ library(sf)
 library(scales)
 
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 
 # download aop data
 df <- read_population(city='Fortaleza',
@@ -24,7 +24,7 @@ df <- read_population(city='Fortaleza',
                       showProgress = FALSE)
 
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 ggplot() +
   geom_sf(data=subset(df, P001>0), aes(fill=P001), color=NA, alpha=.8) +
   scale_fill_distiller(palette = "YlOrRd", direction = 1)+
@@ -32,7 +32,7 @@ ggplot() +
   theme_void()
 
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 ggplot() +
   geom_sf(data=subset(df, !is.na(R002)), aes(fill=factor(R003)), color=NA, alpha=.8) +
   scale_fill_brewer(palette = "RdBu") +
@@ -40,7 +40,7 @@ ggplot() +
   theme_void()
 
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 df$prop_black <- df$P003 / df$P001
   
 ggplot() +

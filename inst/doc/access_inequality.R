@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 # load libraries
 library(aopdata)
 library(sf)
@@ -14,7 +14,7 @@ library(ggplot2)
 library(data.table)
 library(units)
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 
 df <- read_access(city='Curitiba',
                    mode='public_transport',
@@ -22,7 +22,7 @@ df <- read_access(city='Curitiba',
                    year=2019,
                    showProgress = FALSE)
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 
 ggplot() +
   geom_boxplot(data=subset(df, !is.na(R003)),
@@ -36,7 +36,7 @@ ggplot() +
 
 
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 
 # average access of the wealthiest 10%
 avg_access_10p_wealthiest <- df[ R003==10, weighted.mean(x=CMATT60, w=P001, na.rm=T)]
@@ -49,10 +49,10 @@ palma_ratio <- avg_access_10p_wealthiest / avg_access_40p_poorest
 palma_ratio 
 
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 message( paste0('In less than 60 min. by public transport, the 10% wealthiest population could access on average ', round(palma_ratio,1), ' times more job opportunites than the 40% poorest people') )
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 
 # replace Inf travel time with 120
 df[, TMISA := fifelse(TMISA==Inf, 120, TMISA)]

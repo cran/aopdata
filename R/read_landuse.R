@@ -107,7 +107,7 @@ read_landuse <- function(city = NULL,
                                y=year)
 
   # check if download failed
-  if (is.null(temp_meta)) { return(invisible(NULL)) }
+  check_downloaded_obj(temp_meta) # nocov
 
   message(paste0("Downloading land use data for the year ", year))
 
@@ -118,10 +118,15 @@ read_landuse <- function(city = NULL,
   aop_landuse <- download_data(url = file_url, progress_bar = showProgress)
 
   # check if download failed
-  if (is.null(aop_landuse)) { return(invisible(NULL)) } # nocov
+  check_downloaded_obj(aop_landuse) # nocov
 
   # Download and merge population data
   aop_population <- read_population(city=city, showProgress = showProgress)
+
+    # check if download failed
+    check_downloaded_obj(aop_population) # nocov
+
+  # merge
   aop_population[, year := NULL]
   aop <- data.table::merge.data.table(aop_population, aop_landuse, by = c('id_hex', 'abbrev_muni', 'name_muni', 'code_muni'), all = TRUE)
 
@@ -134,6 +139,10 @@ read_landuse <- function(city = NULL,
 
                         # return sf
                         aop_grid <- read_grid(city=city, showProgress=showProgress)
+
+                          # check if download failed
+                          check_downloaded_obj(aop_grid) # nocov
+
 
                         # create function aop_join to bring in land use info
                         aop_sf <- aop_spatial_join(aop, aop_grid)

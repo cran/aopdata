@@ -3,7 +3,6 @@
 \docType{package}
 \name{aopdata}
 \alias{aopdata}
-\alias{_PACKAGE}
 \alias{aopdata-package}
 \title{aopdata: Data from the 'Access to Opportunities Project (AOP)'}
 \description{
@@ -22,6 +21,7 @@ Please check the vignettes on the \href{https://ipeagit.github.io/aopdata/}{webs
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://ipeagit.github.io/aopdata/}
   \item \url{https://github.com/ipeaGIT/aopdata}
   \item Report bugs at \url{https://github.com/ipeaGIT/aopdata/issues}
 }

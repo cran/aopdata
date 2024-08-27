@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -6,14 +6,14 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 library(aopdata)
 library(sf)
 library(ggplot2)
 library(data.table)
 library(scales)
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 # download aop data
 df <- aopdata::read_access(city='Curitiba',
                        mode='public_transport',
@@ -22,7 +22,7 @@ df <- aopdata::read_access(city='Curitiba',
                       geometry = TRUE,
                       showProgress = FALSE)
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 ggplot() +
   geom_sf(data=df, aes(fill=CMATT60), color=NA, alpha=.9) +
   scale_fill_viridis_c(option = "inferno", labels = scales::comma) +
@@ -32,7 +32,7 @@ ggplot() +
 
 
 
-## ---- message = FALSE, eval = TRUE--------------------------------------------
+## ----message = FALSE, eval = TRUE---------------------------------------------
 ggplot() +
   geom_sf(data=df, aes(fill=CMAET30), color=NA, alpha=.9) +
   scale_fill_viridis_c(option = "cividis", labels=scales::comma) +

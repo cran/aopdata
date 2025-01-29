@@ -1,11 +1,19 @@
-# aopdata v1.1.0
+# aopdata v1.1.1
 
+**Bug fixes**
+
+- Download functions should now fail gracefully with an informative message when there are internet connection problems. Making sure to propagate the internet connection issue across function levels.
+
+
+# aopdata v1.1.0
 
 **Minor changes**
 
 - Simplified internal functions
 - Removed dependency on the {httr} package
 - Now using `curl::multi_download()` to download files in parallel
+
+
 
 # aopdata v1.0.3
 

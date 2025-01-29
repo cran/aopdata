@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2024-08-27" />
+<meta name="date" content="2025-01-28" />
 
 <title>Introduction to aopdata</title>
 
@@ -338,7 +338,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Introduction to aopdata</h1>
-<h4 class="date">2024-08-27</h4>
+<h4 class="date">2025-01-28</h4>
 
 
 
@@ -417,23 +417,23 @@ off-peak periods for <code>public_transport</code>and <code>car</code>
 modes.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Download accessibility, population and land use data</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>cur <span class="ot">&lt;-</span> <span class="fu">read_access</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>          <span class="at">city =</span> <span class="st">&#39;Curitiba&#39;</span>, </span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>          <span class="at">mode =</span> <span class="st">&#39;public_transport&#39;</span>, </span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>          <span class="at">peak =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>          <span class="at">year =</span> <span class="dv">2019</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>          <span class="at">showProgress =</span> <span class="cn">FALSE</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>          )</span></code></pre></div>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">city =</span> <span class="st">&#39;Curitiba&#39;</span>, </span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">&#39;public_transport&#39;</span>, </span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">peak =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2019</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="at">showProgress =</span> <span class="cn">FALSE</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  )</span></code></pre></div>
 <p>You many also set the parameter <code>geometry = TRUE</code> so that
 functions return a spatial <code>sf</code> object with the geometries of
 the H3 spatial grid.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Download accessibility, population and land use data</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>cur <span class="ot">&lt;-</span> <span class="fu">read_access</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>          <span class="at">city =</span> <span class="st">&#39;Curitiba&#39;</span>, </span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>          <span class="at">mode =</span> <span class="st">&#39;public_transport&#39;</span>, </span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>          <span class="at">peak =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>          <span class="at">year =</span> <span class="dv">2019</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>          <span class="at">geometry =</span> <span class="cn">TRUE</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>          )</span></code></pre></div>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">city =</span> <span class="st">&#39;Curitiba&#39;</span>, </span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">&#39;public_transport&#39;</span>, </span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">peak =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2019</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="at">geometry =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  )</span></code></pre></div>
 </div>
 <div id="population-and-land-use-data" class="section level3">
 <h3>Population and land use data</h3>
@@ -444,19 +444,19 @@ comes from the latest Brazilian 2010 census, while land use data cna be
 downloaded for 2017, 2018 or 2019.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Land use data</span></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>lnu_for <span class="ot">&lt;-</span> <span class="fu">read_landuse</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                <span class="at">city =</span> <span class="st">&#39;Fortaleza&#39;</span>, </span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>                <span class="at">year =</span> <span class="dv">2019</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>                <span class="at">geometry =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>                <span class="at">showProgress =</span> <span class="cn">FALSE</span></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>                )</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">city =</span> <span class="st">&#39;Fortaleza&#39;</span>, </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2019</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">geometry =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">showProgress =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  )</span>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
 <span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co"># Population data</span></span>
 <span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>pop_for <span class="ot">&lt;-</span> <span class="fu">read_population</span>(</span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>                <span class="at">city =</span> <span class="st">&#39;Fortaleza&#39;</span>, </span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>                <span class="at">year =</span> <span class="dv">2010</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>                <span class="at">geometry =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>                <span class="at">showProgress =</span> <span class="cn">FALSE</span></span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>                )</span></code></pre></div>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">city =</span> <span class="st">&#39;Fortaleza&#39;</span>, </span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2010</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="at">geometry =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>  <span class="at">showProgress =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  )</span></code></pre></div>
 </div>
 <div id="read-only-spatial-grid-data" class="section level3">
 <h3>Read only spatial grid data</h3>
@@ -493,13 +493,15 @@ function.</p>
 <li>The <code>city</code> parameter can also be a 3-letter abbreviation
 of the city.</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_access</span>(<span class="at">city =</span> <span class="st">&#39;cur&#39;</span>, </span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                  <span class="at">mode =</span> <span class="st">&#39;public_transport&#39;</span>, </span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>                  <span class="at">year =</span> <span class="dv">2019</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>                  <span class="at">peak =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>                  <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_grid</span>(<span class="at">city =</span> <span class="st">&#39;for&#39;</span>, <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_access</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">city =</span> <span class="st">&#39;cur&#39;</span>, </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">&#39;public_transport&#39;</span>, </span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2019</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="at">peak =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="at">showProgress =</span> <span class="cn">FALSE</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  )</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_grid</span>(<span class="at">city =</span> <span class="st">&#39;for&#39;</span>, <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <ul>
 <li>You may also download the data for all cities of the project at once
 using <code>city = &#39;all&#39;</code>:</li>

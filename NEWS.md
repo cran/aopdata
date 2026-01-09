@@ -1,3 +1,16 @@
+# aopdata v1.1.2
+
+**Minor changes**
+
+- Messages and errors now use {cli}
+- Avoid printing internet connection messages twice
+
+**Bug fixes**
+
+- Updated vignettes to avoid error in case of eventual internet connection issue.
+- Now using the latest version of {rmarkdown}.
+
+
 # aopdata v1.1.1
 
 **Bug fixes**
@@ -115,7 +128,7 @@
 - New function read_population. Closes #21
 - New parameter `peak` added to `read_access()` function. Closes #17
 - New internal support function `is_online()` to alert for possible internet connection problem. Closes #26
-- Chache downloaded data in tempdir. Closes #28
+- Cache downloaded data in tempdir. Closes #28
 
 **Minor changes**
 

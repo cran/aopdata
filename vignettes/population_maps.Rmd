@@ -16,12 +16,14 @@ knitr::opts_chunk$set(
   eval = identical(tolower(Sys.getenv("NOT_CRAN")), "true"),
   out.width = "100%"
 )
+
 ```
 
-Spatial distribution of population
+Here are a few quick examples to illustrate how you can use the {aopdata} package
+to map the spatial distribution of population in Brazilian cities.
 
 
-```{r, message = FALSE, eval = TRUE}
+```{r, message = FALSE, warning=FALSE, eval=TRUE}
 # load libraries
 library(aopdata)
 library(data.table)
@@ -31,21 +33,20 @@ library(scales)
 
 ```
 
-**Download population data**
-```{r, message = FALSE, eval = TRUE}
-
-# download aop data
-df <- read_population(city='Fortaleza',
-                      year=2010,
-                      geometry = TRUE,
-                      showProgress = FALSE)
+## Download population data
+```{r, message = TRUE, eval = TRUE}
+df <- aopdata::read_population(
+  city = 'Fortaleza',
+  year = 2010,
+  geometry = TRUE,
+  showProgress = FALSE
+  )
 
 ```
 
-**Map Population**
-Spatial distribution of the population
+## Map total population
 
-```{r, message = FALSE, eval = TRUE}
+```{r, message = FALSE, eval=!is.null(df)}
 ggplot() +
   geom_sf(data=subset(df, P001>0), aes(fill=P001), color=NA, alpha=.8) +
   scale_fill_distiller(palette = "YlOrRd", direction = 1)+
@@ -54,10 +55,12 @@ ggplot() +
 
 ```
 
-**Map income levels**
-Spatial distribution population by income decile
 
-```{r, message = FALSE, eval = TRUE}
+## Map population by income levels
+
+Here, we map the spatial distribution population by income decile (column `R003`).
+
+```{r, eval = !is.null(df)}
 ggplot() +
   geom_sf(data=subset(df, !is.na(R002)), aes(fill=factor(R003)), color=NA, alpha=.8) +
   scale_fill_brewer(palette = "RdBu") +
@@ -67,10 +70,12 @@ ggplot() +
 ```
 
 
-**Map racial groups**
-Spatial distribution population black population
 
-```{r, message = FALSE, eval = TRUE}
+## Map population by race
+
+Here, we map the spatial distribution of the black population.
+
+```{r, message = FALSE, eval=!is.null(df)}
 df$prop_black <- df$P003 / df$P001
   
 ggplot() +
@@ -80,4 +85,5 @@ ggplot() +
   theme_void()
 
 ```
+
 

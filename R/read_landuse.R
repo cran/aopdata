@@ -86,9 +86,19 @@
 #' @export
 #' @family land use data functions
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
-#' # a single city
-#' bho <- read_landuse(city = 'Belo Horizonte', year = 2019, showProgress = FALSE)
-#' bho <- read_landuse(city = 'bho', year = 2019, showProgress = FALSE)
+#' # a single city: pass the city name
+#' bho <- read_landuse(
+#'   city = 'Belo Horizonte',
+#'   year = 2019,
+#'   showProgress = FALSE
+#'   )
+#'
+#' # ... or pass a three-letter abbreviation
+#' bho <- read_landuse(
+#'   city = 'bho',
+#'   year = 2019,
+#'   showProgress = FALSE
+#'   )
 #'
 #' # all cities
 #' all <- read_landuse(city = 'all', year = 2019)
@@ -134,22 +144,22 @@ read_landuse <- function(city = NULL,
   aop <- data.table::merge.data.table(aop_population, aop_landuse, by = c('id_hex', 'abbrev_muni', 'name_muni', 'code_muni'), all = TRUE)
 
   # with Vs without spatial data
-  if(geometry == FALSE){
-                        # return df
-                        return(aop)
+  if (geometry == FALSE) {
+    # return df
+    return(aop)
 
-                        } else {
+  } else {
+    # return sf
+    aop_grid <- suppressMessages(
+      read_grid(city = city, showProgress = showProgress)
+    )
 
-                        # return sf
-                        aop_grid <- read_grid(city=city, showProgress=showProgress)
+    # check if download failed
+    check_downloaded_obj(aop_grid) # nocov
+    if (is.null(aop_grid)) { return(invisible(NULL)) }
 
-                          # check if download failed
-                          check_downloaded_obj(aop_grid) # nocov
-                          if (is.null(aop_grid)) { return(invisible(NULL)) }
-
-
-                        # create function aop_join to bring in land use info
-                        aop_sf <- aop_spatial_join(aop, aop_grid)
-                        return(aop_sf)
-                        }
+    # create function aop_join to bring in land use info
+    aop_sf <- aop_spatial_join(aop, aop_grid)
+    return(aop_sf)
+  }
   }

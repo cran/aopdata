@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2025-01-28" />
+<meta name="date" content="2026-01-07" />
 
 <title>Introduction to aopdata</title>
 
@@ -49,6 +49,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -338,7 +339,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Introduction to aopdata</h1>
-<h4 class="date">2025-01-28</h4>
+<h4 class="date">2026-01-07</h4>
 
 
 
@@ -386,10 +387,14 @@ a web browser</li>
 grid</li>
 </ul>
 <p>For a detailed explanations of these functions, check the
-<strong>vignettes</strong>: - <a href="access_maps.html">Mapping urban
-accessibility</a> - <a href="population_maps.html">Mapping population
-data</a> - <a href="landuse_maps.html">Mapping land use data</a> - <a href="access_inequality.html">Analyzing inequality in access to
-opportunities</a></p>
+<strong>vignettes</strong>:</p>
+<ul>
+<li><a href="access_maps.html">Mapping urban accessibility</a></li>
+<li><a href="population_maps.html">Mapping population data</a></li>
+<li><a href="landuse_maps.html">Mapping land use data</a></li>
+<li><a href="access_inequality.html">Analyzing inequality in access to
+opportunities</a></li>
+</ul>
 </div>
 <div id="basic-usage" class="section level2">
 <h2>Basic Usage</h2>
@@ -416,7 +421,7 @@ selected. Note that accessibility estimates are available for peak and
 off-peak periods for <code>public_transport</code>and <code>car</code>
 modes.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Download accessibility, population and land use data</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>cur <span class="ot">&lt;-</span> <span class="fu">read_access</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> aopdata<span class="sc">::</span><span class="fu">read_access</span>(</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">city =</span> <span class="st">&#39;Curitiba&#39;</span>, </span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">&#39;public_transport&#39;</span>, </span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">peak =</span> <span class="cn">TRUE</span>,</span>
@@ -427,7 +432,7 @@ modes.</p>
 functions return a spatial <code>sf</code> object with the geometries of
 the H3 spatial grid.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Download accessibility, population and land use data</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>cur <span class="ot">&lt;-</span> <span class="fu">read_access</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> aopdata<span class="sc">::</span><span class="fu">read_access</span>(</span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">city =</span> <span class="st">&#39;Curitiba&#39;</span>, </span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">&#39;public_transport&#39;</span>, </span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">peak =</span> <span class="cn">TRUE</span>,</span>
@@ -443,7 +448,7 @@ these data sets separately. Please note that the population available
 comes from the latest Brazilian 2010 census, while land use data cna be
 downloaded for 2017, 2018 or 2019.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Land use data</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>lnu_for <span class="ot">&lt;-</span> <span class="fu">read_landuse</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> aopdata<span class="sc">::</span><span class="fu">read_landuse</span>(</span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">city =</span> <span class="st">&#39;Fortaleza&#39;</span>, </span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2019</span>,</span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">geometry =</span> <span class="cn">TRUE</span>,</span>
@@ -451,7 +456,7 @@ downloaded for 2017, 2018 or 2019.</p>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  )</span>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
 <span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co"># Population data</span></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>pop_for <span class="ot">&lt;-</span> <span class="fu">read_population</span>(</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>df <span class="ot">&lt;-</span> aopdata<span class="sc">::</span><span class="fu">read_population</span>(</span>
 <span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">city =</span> <span class="st">&#39;Fortaleza&#39;</span>, </span>
 <span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2010</span>,</span>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="at">geometry =</span> <span class="cn">TRUE</span>,</span>
@@ -463,28 +468,7 @@ downloaded for 2017, 2018 or 2019.</p>
 <p>In case you would like to download only the H3 spatial grid of cities
 in the AOP project, you can use the <code>read_grid()</code>
 function.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>h3_for <span class="ot">&lt;-</span> <span class="fu">read_grid</span>(<span class="at">city =</span> <span class="st">&#39;Fortaleza&#39;</span>, <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">head</span>(h3_for)</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 6 features and 4 fields</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; Geometry type: POLYGON</span></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: -38.50828 ymin: -3.889301 xmax: -38.4983 ymax: -3.878958</span></span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt;            id_hex abbrev_muni name_muni code_muni</span></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; 1 89801040323ffff         for Fortaleza   2304400</span></span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; 2 89801040327ffff         for Fortaleza   2304400</span></span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; 3 8980104032bffff         for Fortaleza   2304400</span></span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; 4 8980104032fffff         for Fortaleza   2304400</span></span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; 5 89801040333ffff         for Fortaleza   2304400</span></span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; 6 89801040337ffff         for Fortaleza   2304400</span></span>
-<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt;                             geom</span></span>
-<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; 1 POLYGON ((-38.50232 -3.8858...</span></span>
-<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; 2 POLYGON ((-38.50527 -3.8840...</span></span>
-<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; 3 POLYGON ((-38.49932 -3.8841...</span></span>
-<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; 4 POLYGON ((-38.50227 -3.8824...</span></span>
-<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#&gt; 5 POLYGON ((-38.50237 -3.8893...</span></span>
-<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt; 6 POLYGON ((-38.50532 -3.8875...</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>h3 <span class="ot">&lt;-</span> aopdata<span class="sc">::</span><span class="fu">read_grid</span>(<span class="at">city =</span> <span class="st">&#39;Fortaleza&#39;</span>, <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="note" class="section level3">
 <h3>Note</h3>
@@ -493,7 +477,7 @@ function.</p>
 <li>The <code>city</code> parameter can also be a 3-letter abbreviation
 of the city.</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_access</span>(</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> aopdata<span class="sc">::</span><span class="fu">read_access</span>(</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">city =</span> <span class="st">&#39;cur&#39;</span>, </span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">&#39;public_transport&#39;</span>, </span>
 <span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2019</span>,</span>
@@ -501,12 +485,12 @@ of the city.</li>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="at">showProgress =</span> <span class="cn">FALSE</span></span>
 <span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  )</span>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_grid</span>(<span class="at">city =</span> <span class="st">&#39;for&#39;</span>, <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>df <span class="ot">&lt;-</span> aopdata<span class="sc">::</span><span class="fu">read_grid</span>(<span class="at">city =</span> <span class="st">&#39;for&#39;</span>, <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <ul>
 <li>You may also download the data for all cities of the project at once
 using <code>city = &#39;all&#39;</code>:</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>all <span class="ot">&lt;-</span> <span class="fu">read_landuse</span>(<span class="at">city =</span> <span class="st">&#39;all&#39;</span>, <span class="at">year =</span> <span class="dv">2019</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> aopdata<span class="sc">::</span><span class="fu">read_landuse</span>(<span class="at">city =</span> <span class="st">&#39;all&#39;</span>, <span class="at">year =</span> <span class="dv">2019</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="acknowledgement" class="section level1">

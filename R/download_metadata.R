@@ -25,7 +25,7 @@ download_metadata <- function(){ # nocov start
     if (is.null(check_con) | isFALSE(check_con)) {
       metadata_link <- 'https://www.ipea.gov.br/geobr/aopdata/metadata/metadata.csv'
       try( silent = TRUE,
-           check_con <- check_connection(metadata_link, silent = FALSE)
+           check_con <- check_connection(metadata_link, silent = TRUE)
            )
 
       if (is.null(check_con) | isFALSE(check_con)) { return(invisible(NULL)) }
@@ -44,8 +44,8 @@ download_metadata <- function(){ # nocov start
 
     # if anything fails, return NULL
     if (any(!downloaded_files$success | is.na(downloaded_files$success))) {
-      msg <- paste("File cached locally seems to be corrupted. Please download it again.")
-      message(msg)
+      msg <- "File cached locally seems to be corrupted. Please download it again."
+      cli::cli_alert_danger(msg)
       return(invisible(NULL))
     }
   }
@@ -55,7 +55,8 @@ download_metadata <- function(){ # nocov start
 
   # check if data was read Ok
   if (nrow(metadata)==0) {
-    message("A file must have been corrupted during download. Please restart your R session and download the data again.")
+    msg <- "A file must have been corrupted during download. Please restart your R session and download the data again."
+    cli::cli_alert_danger(msg)
     return(invisible(NULL))
   }
 

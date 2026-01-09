@@ -120,13 +120,21 @@
 #' @family accessibility data functions
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' # Read accessibility estimates of a single city
-#' df <- read_access(city = 'Fortaleza', mode = 'public_transport', year = 2019, showProgress = FALSE)
-#' df <- read_access(city = 'Goiania', mode = 'public_transport', year = 2019, showProgress = FALSE)
+#' df <- read_access(
+#'   city = 'Fortaleza',
+#'   mode = 'public_transport',
+#'   year = 2019,
+#'   showProgress = FALSE
+#' )
 #'
 #' # Read accessibility estimates for all cities
-#' all <- read_access(city = 'all', mode = 'walk', year = 2019, showProgress = FALSE)
+#' all <- read_access(
+#'   city = 'all',
+#'   mode = 'walk',
+#'   year = 2019,
+#'   showProgress = FALSE
+#' )
 #'
-
 read_access <- function(city = NULL,
                         mode = 'walk',
                         peak = TRUE,
@@ -187,7 +195,9 @@ read_access <- function(city = NULL,
   cities_with_pt_check <- all(city %in% cities_with_pt )
 
   if (isFALSE(cities_with_pt_check) & mode == 'public_transport') {
-    stop("The only cities with public transport data for the year ", year, " are ", paste(cities_with_pt, collapse = ", "))
+    cities_available <- paste(cities_with_pt, collapse = ", ")
+    error_msg <- "The only cities with public transport data in {year} are: {cities_available}."
+    cli::cli_abort(error_msg)
     }
 
   if (any(city == 'all') & mode=='public_transport') {
@@ -223,20 +233,21 @@ read_access <- function(city = NULL,
   aop <- aop_merge(aop_landuse, aop_access)
 
   # with Vs without spatial data
-  if(geometry == FALSE){
-                        # return df
-                        return(aop)
+  if (geometry == FALSE) {
+      # return df
+      return(aop)
 
-                        } else {
+    } else {
+      # return sf
+      aop_grid <- suppressMessages(
+        read_grid(city = city, showProgress = showProgress)
+      )
 
-                        # return sf
-                        aop_grid <- read_grid(city=city, showProgress=showProgress)
+      # check if download failed
+      check_downloaded_obj(aop_grid) # nocov
+      if (is.null(aop_grid)) { return(invisible(NULL)) }
 
-                        # check if download failed
-                        check_downloaded_obj(aop_grid) # nocov
-                        if (is.null(aop_grid)) { return(invisible(NULL)) }
-
-                        aop_sf <- aop_spatial_join(aop, aop_grid)
-                        return(aop_sf)
-                        }
+      aop_sf <- aop_spatial_join(aop, aop_grid)
+      return(aop_sf)
+    }
   }

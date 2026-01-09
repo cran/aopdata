@@ -1,6 +1,6 @@
 Package: aopdata
 Title: Data from the 'Access to Opportunities Project (AOP)'
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: c(
              person(given="Rafael H. M.", family="Pereira", email="rafa.pereira.br@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-2125-7465")),
              person(given="Daniel", family="Herszenhut", email="dhersz@gmail.com", role="aut", comment = c(ORCID = "0000-0001-8066-1105")),
@@ -23,23 +23,24 @@ BugReports: https://github.com/ipeaGIT/aopdata/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
-Imports: checkmate, curl (>= 5.0.0), data.table, methods, sf (>=
-        0.9-3), utils
+Imports: cli, checkmate, curl (>= 5.0.0), data.table, methods, rlang,
+        sf (>= 0.9-3), utils
 Suggests: covr, dplyr (>= 0.8-3), ggplot2 (>= 3.3.1), knitr, rmarkdown
-        (>= 2.6), scales, testthat, units
-RoxygenNote: 7.3.2
+        (>= 2.30), scales, testthat, units
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2025-01-28 20:16:05 UTC; user
-Author: Rafael H. M. Pereira [aut, cre]
-    (<https://orcid.org/0000-0003-2125-7465>),
-  Daniel Herszenhut [aut] (<https://orcid.org/0000-0001-8066-1105>),
-  Marcus Saraiva [aut] (<https://orcid.org/0000-0001-6218-2338>),
-  Carlos Kaue Vieira Braga [aut]
-    (<https://orcid.org/0000-0002-6104-7297>),
+Packaged: 2026-01-07 17:27:12 UTC; r1701707
+Author: Rafael H. M. Pereira [aut, cre] (ORCID:
+    <https://orcid.org/0000-0003-2125-7465>),
+  Daniel Herszenhut [aut] (ORCID:
+    <https://orcid.org/0000-0001-8066-1105>),
+  Marcus Saraiva [aut] (ORCID: <https://orcid.org/0000-0001-6218-2338>),
+  Carlos Kaue Vieira Braga [aut] (ORCID:
+    <https://orcid.org/0000-0002-6104-7297>),
   Diego Bogado Tomasiello [ctb],
   Joao Bazzo [ctb],
   Ipea - Institute for Applied Economic Research [cph, fnd]
 Maintainer: Rafael H. M. Pereira <rafa.pereira.br@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-01-29 00:10:02 UTC
+Date/Publication: 2026-01-09 08:20:02 UTC

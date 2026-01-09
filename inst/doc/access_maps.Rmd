@@ -3,7 +3,6 @@ title: 'Mapping urban accessibility'
 author: "Rafael H. M. Pereira .."
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
-abstract: "Mapping urban accessibility "
 urlcolor: blue
 vignette: >
   %\VignetteIndexEntry{Mapping urban accessibility} 
@@ -21,10 +20,9 @@ knitr::opts_chunk$set(
 ```
 
 
-
 **Load libraries**
 
-```{r, message = FALSE, eval = TRUE}
+```{r, message = FALSE, eval = TRUE, warning=FALSE}
 library(aopdata)
 library(sf)
 library(ggplot2)
@@ -32,38 +30,39 @@ library(data.table)
 library(scales)
 ```
 
-**Download accessibility data**
+## Download accessibility data
 
 ```{r, message = FALSE, eval = TRUE}
 # download aop data
-df <- aopdata::read_access(city='Curitiba',
-                       mode='public_transport',
-                      year=2019,
-                      peak = FALSE,
-                      geometry = TRUE,
-                      showProgress = FALSE)
+df <- aopdata::read_access(
+  city = 'Curitiba',
+  mode = 'public_transport',
+  year = 2019,
+  peak = FALSE,
+  geometry = TRUE,
+  showProgress = FALSE
+  )
 ```
 
-**Plot map with spatial distribution of access to job opportunities**
-```{r, message = FALSE, eval = TRUE}
+## Map access to job opportunities
+```{r, message = FALSE, eval = !is.null(df)}
 ggplot() +
   geom_sf(data=df, aes(fill=CMATT60), color=NA, alpha=.9) +
   scale_fill_viridis_c(option = "inferno", labels = scales::comma) +
   labs(title='Number of jobs accessible', fill="Accessibility",
        subtitle='by public transport in less than 60 min.') +
   theme_void()
-
-
 ```
 
-**Map access to Schools**
 
-```{r, message = FALSE, eval = TRUE}
+## Map access to schools
+
+```{r, message = FALSE, eval = !is.null(df)}
 ggplot() +
   geom_sf(data=df, aes(fill=CMAET30), color=NA, alpha=.9) +
   scale_fill_viridis_c(option = "cividis", labels=scales::comma) +
     labs(title='Number of schools accessible', fill="Accessibility",
        subtitle='by public transport in less than 30 min.', fill="N. of schools") +
   theme_void()
-
 ```
+

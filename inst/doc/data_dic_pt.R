@@ -6,3 +6,6 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
+## ----message = FALSE, eval = FALSE--------------------------------------------
+# aopdata_dictionary(lang = 'pt')
+

@@ -68,9 +68,19 @@
 #' @export
 #' @family population data functions
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
-#' # a single city
-#' bho <- read_population(city = 'Belo Horizonte', year = 2010, showProgress = FALSE)
-#' bho <- read_population(city = 'bho', year = 2010, showProgress = FALSE)
+#' # a single city: pass the city name
+#' bho <- read_population(
+#'   city = 'Belo Horizonte',
+#'   year = 2010,
+#'   showProgress = FALSE
+#'   )
+#'
+#' # ... or pass a three-letter abbreviation
+#' bho <- read_population(
+#'   city = 'bho',
+#'   year = 2010,
+#'   showProgress = FALSE
+#'   )
 #'
 #' # all cities
 #' all <- read_population(city = 'all', year = 2010)
@@ -105,21 +115,22 @@ read_population <- function(city = NULL,
   if (is.null(aop_population)) { return(invisible(NULL)) }
 
   # with Vs without spatial data
-  if(geometry == FALSE){
-                        # return df
-                        return(aop_population)
+  if (geometry == FALSE) {
+      # return df
+      return(aop_population)
 
-                        } else {
+    } else {
+      # return sf
+      aop_grid <- suppressMessages(
+        read_grid(city = city, showProgress = showProgress)
+        )
 
-                        # return sf
-                        aop_grid <- read_grid(city=city, showProgress=showProgress)
+      # check if download failed
+      check_downloaded_obj(aop_grid) # nocov
+      if (is.null(aop_grid)) { return(invisible(NULL)) }
 
-                          # check if download failed
-                          check_downloaded_obj(aop_grid) # nocov
-                          if (is.null(aop_grid)) { return(invisible(NULL)) }
-
-                        # create function aop_join to bring in land use info
-                        aop_sf <- aop_spatial_join(aop_population, aop_grid)
-                        return(aop_sf)
-                        }
+      # create function aop_join to bring in land use info
+      aop_sf <- aop_spatial_join(aop_population, aop_grid)
+      return(aop_sf)
+    }
   }
